@@ -39,15 +39,6 @@ def register():
 
         flash(error)
 
-    import logging
-
-    # Configure logging
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    logger = logging.getLogger(__name__)
-
-    # Log the registration attempt
-    logger.info(f"Registration attempt for ")
-
     return render_template('auth/register.html')
 
 @bp.route('/login', methods=('GET', 'POST'))
