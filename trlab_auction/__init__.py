@@ -1,13 +1,14 @@
 import os
 
 from flask import Flask
-from . import db
+from . import database
 # from . import auth
 
+# The application factory function
 def create_app(test_config=None):
     # create and configure the app
 
-    # The app is in a package (trlab_auction) and you import it, __name__ might be "trlab_auction"
+    # The app is in a package (trlab_auction) and you import it, __name__ being "trlab_auction"
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='trlab_auction_dev',
@@ -16,7 +17,7 @@ def create_app(test_config=None):
 
     # app.register_blueprint(auth.bp)
 
-    db.init_app(app)
+    database.init_app(app)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
