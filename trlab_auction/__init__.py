@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, render_template
 from . import database
 from .auth import bp as auth_bp
 
@@ -37,4 +37,8 @@ def create_app(test_config=None):
     def hello():
         return 'Hello, trlab_auction.'
 
+    @app.route('/home')
+    def home():
+        return render_template('index-3.html')
+    
     return app
