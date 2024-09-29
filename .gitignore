@@ -1,4 +1,5 @@
 .venv/
+magellano-html/
 
 *.pyc
 __pycache__/
