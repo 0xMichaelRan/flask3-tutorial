@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 from . import database
-# from . import auth
+from .auth import bp as auth_bp
 
 # The application factory function
 def create_app(test_config=None):
@@ -15,7 +15,7 @@ def create_app(test_config=None):
         DATABASE=os.path.join(app.instance_path, 'trlab_auction.sqlite'),
     )
 
-    # app.register_blueprint(auth.bp)
+    app.register_blueprint(auth_bp)
 
     database.init_app(app)
 
