@@ -21,15 +21,14 @@
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- BASE CSS -->
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<!-- <link href="css/style.css" rel="stylesheet"> -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
     <!-- SPECIFIC CSS -->
-    <link href="css/account.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
 
     <!-- YOUR CUSTOM CSS -->
-    <link href="css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 </head>
 
 <body id="register_bg">
@@ -42,8 +41,8 @@
 		<aside>
 			<figure>
 				<a href="index.html" class="logo_account">
-					<img src="img/logo.svg" alt="" width="140" height="35" class="dark">
-	                <img src="img/logo-light-mode.svg" alt="" width="140" height="35" class="light">
+					<img src="{{ url_for('static', filename='img/logo.svg') }}" alt="" width="140" height="35" class="dark">
+	                <img src="{{ url_for('static', filename='img/logo-light-mode.svg') }}" alt="" width="140" height="35" class="light">
 				</a>
 			</figure>
 			<div class="access_social">
@@ -75,12 +74,12 @@
 	<!-- /login -->
 	
 	<!-- COMMON SCRIPTS -->
-    <script src="js/common_scripts.min.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/common_func.js"></script>
+    <script src="{{ url_for('static', filename='js/common_scripts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/common_func.js') }}"></script>
 	
 	<!-- SPECIFIC SCRIPTS -->
-	<script src="js/pw_strenght.js"></script>	
+    <script src="{{ url_for('static', filename='js/pw_strenght.js') }}"></script>
   
 </body>
 </html>
