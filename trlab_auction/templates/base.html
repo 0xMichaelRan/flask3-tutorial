@@ -51,21 +51,21 @@
                 </a>
             </div>
             <ul class="top_menu">
+
+                {% if g.user %}
+                <li><a href="" class="btn_access">{{ g.user['username']|capitalize }}</a>
+                </li>
+                <li><a href="{{ url_for('auth.logout') }}" class="btn_access">Logout</a></li>
+                {% else %}
+                <li><a href="{{ url_for('auth.login') }}" class="btn_access">Log In</a></li>
+                {% endif %}
+
                 <li>
                     <span class="color_mode_bt">
                         <input id="theme_toggle" type="checkbox" name="theme_toggle" />
                         <label for="theme_toggle"></label>
                     </span>
                 </li>
-                
-                {% if g.user %}
-                    <li><span>{{ g.user['username'] }}</span></li>
-                    <li><a href="{{ url_for('auth.logout') }}" class="btn_access">Log Out</a></li>
-                    <li><a href="auth/logout" >Logout</a></li>
-                {% else %}
-                    <li><a href="{{ url_for('auth.login') }}" class="btn_access">Log In</a></li>
-                {% endif %}
-
             </ul>
             <!-- /top_menu -->
             <a href="#0" class="open_close">
@@ -86,13 +86,13 @@
                     </a>
                 </div>
                 <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
                     <li class="submenu">
-                        <a href="#0" class="show-submenu">Home</a>
+                        <a href="#0" class="show-submenu">Other</a>
                         <ul>
                             <li><a href="index.html">Default</a></li>
                             <li><a href="index-2.html">Experimental Particles</a></li>
                             <li><a href="index-10.html">Particles</a></li>
-                            <li><a href="home">Video Background</a></li>
                             <li><a href="index-4.html">Vertical Slider</a></li>
                             <li><a href="index-5.html">Slider</a></li>
                             <li><a href="index-6.html">Hero Categories</a></li>
@@ -100,11 +100,6 @@
                             <li><a href="index-7.html">GDPR Cookie Bar EU Law</a></li>
                             <li><a href="index-8.html">Modal Advertise</a></li>
                             <li><a href="index-9.html">Modal Newsletter</a></li>
-                        </ul>
-                    </li>
-                    <li class="submenu">
-                        <a href="#0" class="show-submenu">Explore</a>
-                        <ul>
                             <li><a href="grid-listing-1.html">Grid Listing Default</a></li>
                             <li><a href="grid-listing-2.html">Grid Listing Isotope Sort</a></li>
                             <li><a href="grid-listing-3.html">Grid Listing Filters Left</a></li>
@@ -132,11 +127,8 @@
                             <li><a href="blog.html">Blog</a></li>
                             <li><a href="blog-no-sidebar.html">Blog no sidebar</a></li>
                             <li><a href="contacts.html">Contacts</a></li>
-                            <li><a href="login.html">Login</a></li>
-                            <li><a href="register.html">Register</a></li>
                         </ul>
                     </li>
-                    <li><a href="auth/register">Register</a></li>
                 </ul>
             </nav>
         </div>
