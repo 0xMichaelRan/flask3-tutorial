@@ -53,7 +53,7 @@
             <ul class="top_menu">
 
                 {% if g.user %}
-                <li><a href="" class="btn_access">{{ g.user['username']|capitalize }}</a>
+                <li><a href="{{ url_for('profile.upload') }}" class="btn_access">{{ g.user['username']|capitalize }}</a>
                 </li>
                 <li><a href="{{ url_for('auth.logout') }}" class="btn_access">Logout</a></li>
                 {% else %}
