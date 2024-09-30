@@ -50,14 +50,14 @@
 						height="35" class="light">
 				</a>
 			</figure>
-			<form>
+			<form method="post">
 				<div class="access_social">
 					<a href="#0" class="social_bt facebook">Login with Facebook</a>
 					<a href="#0" class="social_bt google">Login with Google</a>
 				</div>
 				<div class="divider"><span>Or</span></div>
 				<div class="form-group mb-3">
-					<input type="email" class="form-control" name="email" id="email" placeholder="Email">
+					<input type="text" class="form-control" name="username" placeholder="Username">
 				</div>
 				<div class="form-group">
 					<input type="password" class="form-control" name="password" id="password" value=""
@@ -72,8 +72,8 @@
 					</div>
 					<div class="float-end"><a id="forgot" href="javascript:void(0);">Forgot Password?</a></div>
 				</div>
-				<a href="#0" class="btn_1 full-width">Login</a>
-				<div class="text-center add_top_10">New to Trlab? <strong><a href="{{ url_for('auth.register') }}">Sign
+				<input type="submit" value="Login 123" class="btn_1 full-width">
+				<div class="text-center add_top_10">New to TRLab? <strong><a href="{{ url_for('auth.register') }}">Sign
 							up!</a></strong></div>
 			</form>
 			<div class="copy">© 2024 0xMichaelRan</div>
