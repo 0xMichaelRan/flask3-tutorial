@@ -1,39 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-    
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Magellano - NFT Marketplace Website Template by Ansonika">
-        <meta name="author" content="Ansonika">
-        <title>{% block title %}{% endblock %} - TRLab Auction</title>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Magellano - NFT Marketplace Website Template by Ansonika">
+    <meta name="author" content="Ansonika">
+    <title>{% block title %}{% endblock %} - TRLab Auction</title>
 
     <!-- FAVICONS-->
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
-    <link rel="apple-touch-icon" type="image/x-icon" href="{{ url_for('static', filename='img/apple-touch-icon-57x57-precomposed.png') }}">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{{ url_for('static', filename='img/apple-touch-icon-72x72-precomposed.png') }}">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="{{ url_for('static', filename='img/apple-touch-icon-114x114-precomposed.png') }}">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="{{ url_for('static', filename='img/apple-touch-icon-144x144-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon"
+        href="{{ url_for('static', filename='img/apple-touch-icon-57x57-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72"
+        href="{{ url_for('static', filename='img/apple-touch-icon-72x72-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114"
+        href="{{ url_for('static', filename='img/apple-touch-icon-114x114-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144"
+        href="{{ url_for('static', filename='img/apple-touch-icon-144x144-precomposed.png') }}">
 
     <!-- GOOGLE FONT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-	<!-- BASE CSS -->
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- BASE CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
     <!-- SPECIFIC CSS -->
     {% block specificcss %}{% endblock %}
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 
     <!-- YOUR CUSTOM CSS -->
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 </head>
 
 <body>
-    {% block fullbody %}{% endblock %}
+
+    <header class="header clearfix element_to_stick">
+        <div class="layer"></div><!-- Opacity Mask Menu Mobile -->
+        <div class="container">
+            <div class="logo">
+                <a href="/home">
+                    <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="" width="140" height="35" class="dark">
+                    <img src="{{ url_for('static', filename='img/logo-light-mode.svg') }}" alt="" width="140" height="35"
+                        class="light">
+                </a>
+            </div>
+            <ul class="top_menu">
+                <li>
+                    <span class="color_mode_bt">
+                        <input id="theme_toggle" type="checkbox" name="theme_toggle" />
+                        <label for="theme_toggle"></label>
+                    </span>
+                </li>
+                <li><a href="auth/login" class="btn_access">Log In</a></li>
+                <li><a href="connect-wallet.html" class="btn_access">Connect Wallet</a></li>
+            </ul>
+            <!-- /top_menu -->
+            <a href="#0" class="open_close">
+                <i class="bi bi-list"></i><span>Menu</span>
+            </a>
+            <nav class="main-menu">
+                <div id="header_menu">
+                    <a href="#0" class="open_close">
+                        <i class="bi bi-x"></i>
+                    </a>
+                    <a href="index.html" class="logo_menu">
+                        <img src="{{ url_for('static', filename='img/logo-placeholder.png') }}"
+                            data-src="{{ url_for('static', filename='img/logo.svg') }}" alt="" width="120" height="30"
+                            class="dark lazy">
+                        <img src="{{ url_for('static', filename='img/logo-placeholder.png') }}"
+                            data-src="{{ url_for('static', filename='img/logo-light-mode.svg') }}" alt="" width="120"
+                            height="30" class="light lazy">
+                    </a>
+                </div>
+                <ul>
+                    <li class="submenu">
+                        <a href="#0" class="show-submenu">Home</a>
+                        <ul>
+                            <li><a href="index.html">Default</a></li>
+                            <li><a href="index-2.html">Experimental Particles</a></li>
+                            <li><a href="index-10.html">Particles</a></li>
+                            <li><a href="home">Video Background</a></li>
+                            <li><a href="index-4.html">Vertical Slider</a></li>
+                            <li><a href="index-5.html">Slider</a></li>
+                            <li><a href="index-6.html">Hero Categories</a></li>
+                            <li><a href="index-11.html">Hero Vesion 2</a></li>
+                            <li><a href="index-7.html">GDPR Cookie Bar EU Law</a></li>
+                            <li><a href="index-8.html">Modal Advertise</a></li>
+                            <li><a href="index-9.html">Modal Newsletter</a></li>
+                        </ul>
+                    </li>
+                    <li class="submenu">
+                        <a href="#0" class="show-submenu">Explore</a>
+                        <ul>
+                            <li><a href="grid-listing-1.html">Grid Listing Default</a></li>
+                            <li><a href="grid-listing-2.html">Grid Listing Isotope Sort</a></li>
+                            <li><a href="grid-listing-3.html">Grid Listing Filters Left</a></li>
+                            <li><a href="detail-page.html">Detail page 1</a></li>
+                            <li><a href="detail-page-2.html">Detail page 2</a></li>
+                            <li><a href="author.html">Author page</a></li>
+                        </ul>
+                    </li>
+                    <li class="submenu">
+                        <a href="#0" class="show-submenu">Pages</a>
+                        <ul>
+                            <li><a href="404.html">404 Error</a></li>
+                            <li><a href="help.html">Help and Faq</a></li>
+                            <li class="third-level"><a href="#0">Pricing Tables</a>
+                                <ul>
+                                    <li><a href="pricing-tables-1.html">Version 1</a></li>
+                                    <li><a href="pricing-tables-2.html">Version 2</a></li>
+                                    <li><a href="pricing-tables-3.html">Version 3</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="become-author.html">Become an Author</a></li>
+                            <li><a href="author-edit-profile.html">Edit profile</a></li>
+                            <li><a href="upload-artwork.html">Upload Artwork</a></li>
+                            <li><a href="account-settings.html">Account Settings</a></li>
+                            <li><a href="blog.html">Blog</a></li>
+                            <li><a href="blog-no-sidebar.html">Blog no sidebar</a></li>
+                            <li><a href="contacts.html">Contacts</a></li>
+                            <li><a href="login.html">Login</a></li>
+                            <li><a href="register.html">Register</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="auth/register">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    
+    {% block main %}{% endblock %}
+    {% block footer %}{% endblock %}
+    {% block modal_and_scripts %}{% endblock %}
     <!-- <nav>
         <h1>TRLab Auction</h1>
         <ul>
@@ -50,4 +154,5 @@
         {% block content %}{% endblock %}
     </section> -->
 </body>
+
 </html>
