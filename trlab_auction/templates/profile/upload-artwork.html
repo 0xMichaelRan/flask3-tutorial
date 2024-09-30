@@ -7,7 +7,7 @@
 {% block main %}
 <main>
     <div class="hero_single inner_pages author_page jarallax" data-jarallax>
-        <img class="jarallax-img" src="img/hero_general.jpg" alt="">
+        <img class="jarallax-img" src="{{ url_for('static', filename='img/hero_general.jpg') }}" alt="">
         <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.4)">
         </div>
         <div class="wave hero"></div>
@@ -22,17 +22,19 @@
                         <div class="author_thumb veryfied">
                             <i class="bi bi-check"></i>
                             <figure>
-                                <img src="img/avatar-placeholder.png" data-src="img/avatar1.jpg" alt="" class="lazy"
+                                <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}"
+                                    data-src="{{ url_for('static', filename='img/avatar1.jpg') }}" alt="" class="lazy"
                                     width="100" height="100">
                             </figure>
                         </div>
                     </div>
                     <h1>@George_lucas</h1>
                     <ul>
-                        <li><a href="author-edit-profile.html"><i class="bi bi-person"></i>Edit profile</a></li>
-                        <li><a href="upload-artwork.html" class="active"><i
+                        <li><a href="{{ url_for('profile.edit') }}"><i class="bi bi-person"></i>Edit profile</a></li>
+                        <li><a href="{{ url_for('profile.upload') }}" class="active"><i
                                     class="bi bi-file-earmark-arrow-up"></i>Upload Artwork</a></li>
-                        <li><a href="account-settings.html"><i class="bi bi-gear"></i>Account settings</a></li>
+                        <li><a href="{{ url_for('profile.settings') }}"><i class="bi bi-gear"></i>Account settings</a>
+                        </li>
                         <li><a href="#0"><i class="bi bi-box-arrow-right"></i>Log out</a></li>
                     </ul>
                 </div>
@@ -57,8 +59,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Preview</label>
-                            <figure><img src="img/items/item-3.jpg" alt="" width="533" height="400"
-                                    class="img-fluid rounded"></figure>
+                            <figure><img src="{{ url_for('static', filename='img/items/item-3.jpg') }}" alt=""
+                                    width="533" height="400" class="img-fluid rounded"></figure>
                         </div>
                     </div>
                 </div>
