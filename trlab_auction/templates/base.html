@@ -31,7 +31,10 @@
 
     <!-- SPECIFIC CSS -->
     {% block specificcss %}{% endblock %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+
+    <div id="preloader">
+        <div data-loader="circle-side"></div>
+    </div><!-- /Page Preload -->
 
     <!-- YOUR CUSTOM CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
