@@ -263,7 +263,12 @@
         </div>
     </footer>
 
-    {% block modal_and_scripts %}{% endblock %}
+    <div id="toTop"></div><!-- Back to top button -->
+    
+    <!-- COMMON SCRIPTS -->
+    <script src="{{ url_for('static', filename='js/common_scripts.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/common_func.js') }}"></script>
 </body>
 
 </html>

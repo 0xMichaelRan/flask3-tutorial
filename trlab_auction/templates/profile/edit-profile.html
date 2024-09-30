@@ -30,9 +30,10 @@
                     </div>
                     <h1>@George_lucas</h1>
                     <ul>
-                        <li><a href="{{ url_for('profile.edit') }}" class="active"><i class="bi bi-person"></i>Edit profile</a></li>
-                        <li><a href="{{ url_for('profile.upload') }}"><i
-                                    class="bi bi-file-earmark-arrow-up"></i>Upload Artwork</a></li>
+                        <li><a href="{{ url_for('profile.edit') }}" class="active"><i class="bi bi-person"></i>Edit
+                                profile</a></li>
+                        <li><a href="{{ url_for('profile.upload') }}"><i class="bi bi-file-earmark-arrow-up"></i>Upload
+                                Artwork</a></li>
                         <li><a href="{{ url_for('profile.settings') }}"><i class="bi bi-gear"></i>Account settings</a>
                         </li>
                         <li><a href="{{ url_for('auth.logout') }}"><i class="bi bi-box-arrow-right"></i>Log out</a></li>
@@ -109,14 +110,4 @@
     <!-- /container -->
 </main>
 <!-- /main -->
-{% endblock %}
-
-{% block modal_and_scripts %}
-<div id="toTop"></div><!-- Back to top button -->
-
-<!-- COMMON SCRIPTS -->
-<script src="{{ url_for('static', filename='js/common_scripts.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/common_func.js') }}"></script>
-
 {% endblock %}
