@@ -12,8 +12,8 @@
 	    <div class="container">
 	       <div class="logo">
 	            <a href="index.html">
-	                <img src="img/logo.svg" alt="" width="140" height="35" class="dark">
-	                <img src="img/logo-light-mode.svg" alt="" width="140" height="35" class="light">
+	                <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="" width="140" height="35" class="dark">
+	                <img src="{{ url_for('static', filename='img/logo-light-mode.svg') }}" alt="" width="140" height="35" class="light">
 	            </a>
 	        </div>
 	        <ul class="top_menu">
@@ -36,8 +36,8 @@
 	                    <i class="bi bi-x"></i>
 	                </a>
 	                 <a href="index.html" class="logo_menu">
-	                	<img src="img/logo-placeholder.png" data-src="img/logo.svg" alt="" width="120" height="30" class="dark lazy">
-	                	<img src="img/logo-placeholder.png" data-src="img/logo-light-mode.svg" alt="" width="120" height="30" class="light lazy">
+	                	<img src="{{ url_for('static', filename='img/logo-placeholder.png') }}" data-src="{{ url_for('static', filename='img/logo.svg') }}" alt="" width="120" height="30" class="dark lazy">
+	                	<img src="{{ url_for('static', filename='img/logo-placeholder.png') }}" data-src="{{ url_for('static', filename='img/logo-light-mode.svg') }}" alt="" width="120" height="30" class="light lazy">
 	                </a>
 	            </div>
 	            <ul>
@@ -150,7 +150,7 @@
 	                <div class="strip">
 	                    <figure>
 	                        <a href="#modal-dialog" class="btn_1 modal_popup">Place a bid</a>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-1.jpg" class="owl-lazy" alt="" width="533" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-1.jpg') }}" class="owl-lazy" alt="" width="533" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>Amazing Art</h3>
@@ -163,7 +163,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb veryfied"><i class="bi bi-check"></i>
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar2.jpg" alt="" class="owl-lazy" width="100" height="100">
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar2.jpg') }}" alt="" class="owl-lazy" width="100" height="100">
 	                                    </figure>
 	                                </div>
 	                                <h6>@George_luke</h6>
@@ -180,7 +180,7 @@
 	                <div class="strip">
 	                    <figure>
 	                        <a href="#modal-dialog" class="btn_1 modal_popup">Place a bid</a>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-3.jpg" class="owl-lazy" alt="" width="533" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-3.jpg') }}" class="owl-lazy" alt="" width="533" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>Blue sea pain</h3>
@@ -193,7 +193,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb veryfied"><i class="bi bi-check"></i>
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar3.jpg" alt="" class="owl-lazy" width="100" height="100">
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar3.jpg') }}" alt="" class="owl-lazy" width="100" height="100">
 	                                    </figure>
 	                                </div>
 	                                <h6>@Monica_Claus</h6>
@@ -211,7 +211,7 @@
 	                    <div data-countdown="2022/03/15" class="countdown"></div>
 	                    <figure>
 	                        <a href="#modal-dialog" class="btn_1 modal_popup">Place a bid</a>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-4.jpg" class="owl-lazy" alt="" width="533" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-4.jpg') }}" class="owl-lazy" alt="" width="533" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>Abstraction</h3>
@@ -224,7 +224,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb">
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar1.jpg" alt="" class="owl-lazy" width="100" height="100">
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar1.jpg') }}" alt="" class="owl-lazy" width="100" height="100">
 	                                    </figure>
 	                                </div>
 	                                <h6>@Mario_1988</h6>
@@ -241,7 +241,7 @@
 	                <div class="strip">
 	                    <figure>
 	                        <a href="#modal-dialog" class="btn_1 modal_popup">Place a bid</a>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-5.jpg" class="owl-lazy" alt="" width="533" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-5.jpg') }}" class="owl-lazy" alt="" width="533" height="400">
 	                        <a href="author.html" class="author">
 	                        </a>
 	                        <a href="detail-page.html" class="strip_info">
@@ -256,7 +256,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb veryfied"><i class="bi bi-check"></i>
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar4.jpg" alt="" class="owl-lazy" width="100" height="100">
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar4.jpg') }}" alt="" class="owl-lazy" width="100" height="100">
 	                                    </figure>
 	                                </div>
 	                                <h6>@Tomas_Clue</h6>
@@ -273,7 +273,7 @@
 	                <div class="strip">
 	                    <figure>
 	                        <a href="#modal-dialog" class="btn_1 modal_popup">Place a bid</a>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-6.jpg" class="owl-lazy" alt="" width="533" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-6.jpg') }}" class="owl-lazy" alt="" width="533" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>The King</h3>
@@ -286,7 +286,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb">
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar1.jpg" alt="" class="owl-lazy" width="100" height="100">
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar1.jpg') }}" alt="" class="owl-lazy" width="100" height="100">
 	                                    </figure>
 	                                </div>
 	                                <h6>@Pixel_inc</h6>
@@ -303,7 +303,7 @@
 	                <div class="strip">
 	                    <figure>
 	                        <a href="#modal-dialog" class="btn_1 modal_popup">Place a bid</a>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-7.gif" class="owl-lazy" alt="" width="598" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-7.gif') }}" class="owl-lazy" alt="" width="598" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>Driving to center</h3>
@@ -316,7 +316,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb veryfied"><i class="bi bi-check"></i>
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar3.jpg" alt="" class="owl-lazy" width="100" height="100">
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar3.jpg') }}" alt="" class="owl-lazy" width="100" height="100">
 	                                    </figure>
 	                                </div>
 	                                <h6>@Marc_Osl</h6>
@@ -352,7 +352,7 @@
 	                        <div class="author_thumb veryfied">
 	                            <i class="bi bi-check"></i>
 	                            <figure>
-	                                <img src="img/avatar-placeholder.png" data-src="img/avatar1.jpg" alt="" class="lazy" width="100" height="100">
+	                                <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar1.jpg') }}" alt="" class="lazy" width="100" height="100">
 	                            </figure>
 	                        </div>
 	                        <div>
@@ -367,7 +367,7 @@
 	                        <div class="author_thumb veryfied">
 	                            <i class="bi bi-check"></i>
 	                            <figure>
-	                                <img src="img/avatar-placeholder.png" data-src="img/avatar2.jpg" alt="" class="lazy" width="100" height="100">
+	                                <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar2.jpg') }}" alt="" class="lazy" width="100" height="100">
 	                            </figure>
 	                        </div>
 	                        <div>
@@ -382,7 +382,7 @@
 	                        <div class="author_thumb veryfied">
 	                            <i class="bi bi-check"></i>
 	                            <figure>
-	                                <img src="img/avatar-placeholder.png" data-src="img/avatar3.jpg" alt="" class="lazy" width="100" height="100">
+	                                <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar3.jpg') }}" alt="" class="lazy" width="100" height="100">
 	                            </figure>
 	                        </div>
 	                        <div>
@@ -397,7 +397,7 @@
 	                        <div class="author_thumb veryfied">
 	                            <i class="bi bi-check"></i>
 	                            <figure>
-	                                <img src="img/avatar-placeholder.png" data-src="img/avatar4.jpg" alt="" class="lazy" width="100" height="100">
+	                                <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar4.jpg') }}" alt="" class="lazy" width="100" height="100">
 	                            </figure>
 	                        </div>
 	                        <div>
@@ -412,7 +412,7 @@
 	                        <div class="author_thumb veryfied">
 	                            <i class="bi bi-check"></i>
 	                            <figure>
-	                                <img src="img/avatar-placeholder.png" data-src="img/avatar5.jpg" alt="" class="lazy" width="100" height="100">
+	                                <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar5.jpg') }}	" alt="" class="lazy" width="100" height="100">
 	                            </figure>
 	                        </div>
 	                        <div>
@@ -427,7 +427,7 @@
 	                        <div class="author_thumb veryfied">
 	                            <i class="bi bi-check"></i>
 	                            <figure>
-	                                <img src="img/avatar-placeholder.png" data-src="img/avatar6.jpg" alt="" class="lazy" width="100" height="100">
+	                                <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar6.jpg') }}" alt="" class="lazy" width="100" height="100">
 	                            </figure>
 	                        </div>
 	                        <div>
@@ -442,7 +442,7 @@
 	                        <div class="author_thumb veryfied">
 	                            <i class="bi bi-check"></i>
 	                            <figure>
-	                                <img src="img/avatar-placeholder.png" data-src="img/avatar7.jpg" alt="" class="lazy" width="100" height="100">
+	                                <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar7.jpg') }}" alt="" class="lazy" width="100" height="100">
 	                            </figure>
 	                        </div>
 	                        <div>
@@ -457,7 +457,7 @@
 	                        <div class="author_thumb veryfied">
 	                            <i class="bi bi-check"></i>
 	                            <figure>
-	                                <img src="img/avatar-placeholder.png" data-src="img/avatar8.jpg" alt="" class="lazy" width="100" height="100">
+	                                <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar8.jpg') }}	" alt="" class="lazy" width="100" height="100">
 	                            </figure>
 	                        </div>
 	                        <div>
@@ -472,7 +472,7 @@
 	                        <div class="author_thumb veryfied">
 	                            <i class="bi bi-check"></i>
 	                            <figure>
-	                                <img src="img/avatar-placeholder.png" data-src="img/avatar9.jpg" alt="" class="lazy" width="100" height="100">
+	                                <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar9.jpg') }}	" alt="" class="lazy" width="100" height="100">
 	                            </figure>
 	                        </div>
 	                        <div>
@@ -515,7 +515,7 @@
 	            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" data-cue="slideInUp">
 	                <div class="strip">
 	                    <figure>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-8.jpg" class="lazy" alt="" width="533" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-8.jpg') }}" class="lazy" alt="" width="533" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>Lost Women</h3>
@@ -528,7 +528,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb">
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar2.jpg" alt="" class="lazy" width="100" height="100"></figure>
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar2.jpg') }}	" alt="" class="lazy" width="100" height="100"></figure>
 	                                </div>
 	                                <h6>@Jhonny_Bet</h6>
 	                            </a>
@@ -543,7 +543,7 @@
 	            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" data-cue="slideInUp">
 	                <div class="strip">
 	                    <figure>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-9.jpg" class="lazy" alt="" width="533" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-9.jpg') }}	" class="lazy" alt="" width="533" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>Hidden Fall</h3>
@@ -556,7 +556,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb veryfied"><i class="bi bi-check"></i>
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar4.jpg" alt="" class="lazy" width="100" height="100"></figure>
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar4.jpg') }}	" alt="" class="lazy" width="100" height="100"></figure>
 	                                </div>
 	                                <h6>@Gregory</h6>
 	                            </a>
@@ -571,7 +571,7 @@
 	            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" data-cue="slideInUp">
 	                <div class="strip">
 	                    <figure>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-10.jpg" class="lazy" alt="" width="533" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-10.jpg') }}		" class="lazy" alt="" width="533" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>Clock Ocean</h3>
@@ -584,7 +584,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb">
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar4.jpg" alt="" class="lazy" width="100" height="100"></figure>
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar4.jpg') }}	" alt="" class="lazy" width="100" height="100"></figure>
 	                                </div>
 	                                <h6>@Robert98</h6>
 	                            </a>
@@ -599,7 +599,7 @@
 	            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" data-cue="slideInUp">
 	                <div class="strip">
 	                    <figure>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-11.jpg" class="lazy" alt="" width="533" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-11.jpg') }}		" class="lazy" alt="" width="533" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>Hello World!</h3>
@@ -612,7 +612,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb">
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar3.jpg" alt="" class="lazy" width="100" height="100">
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar3.jpg') }}		" alt="" class="lazy" width="100" height="100">
 	                                    </figure>
 	                                </div>
 	                                <h6>@Salazar</h6>
@@ -628,7 +628,7 @@
 	            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" data-cue="slideInUp">
 	                <div class="strip">
 	                    <figure>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-12.jpg" class="lazy" alt="" width="533" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-12.jpg') }}			" class="lazy" alt="" width="533" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>Brain Storm</h3>
@@ -641,7 +641,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb">
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar1.jpg" alt="" class="lazy" width="100" height="100"></figure>
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar1.jpg') }}			" alt="" class="lazy" width="100" height="100"></figure>
 	                                </div>
 	                                <h6>@Bennet_corp</h6>
 	                            </a>
@@ -656,7 +656,7 @@
 	            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" data-cue="slideInUp">
 	                <div class="strip">
 	                    <figure>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-6.jpg" class="lazy" alt="" width="533" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-6.jpg') }}			" class="lazy" alt="" width="533" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>The King</h3>
@@ -669,7 +669,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb">
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar1.jpg" alt="" class="lazy" width="100" height="100"></figure>
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar1.jpg') }}				" alt="" class="lazy" width="100" height="100"></figure>
 	                                </div>
 	                                <h6>@Pixel_inc</h6>
 	                            </a>
@@ -684,7 +684,7 @@
 	            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" data-cue="slideInUp">
 	                <div class="strip">
 	                    <figure>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-7.gif" class="lazy" alt="" width="598" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-7.gif') }}			" class="lazy" alt="" width="598" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>Driving to center</h3>
@@ -697,7 +697,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb veryfied"><i class="bi bi-check"></i>
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar3.jpg" alt="" class="lazy" width="100" height="100"></figure>
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar3.jpg') }}				" alt="" class="lazy" width="100" height="100"></figure>
 	                                </div>
 	                                <h6>@Marc_Osl</h6>
 	                            </a>
@@ -712,7 +712,7 @@
 	            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" data-cue="slideInUp">
 	                <div class="strip">
 	                    <figure>
-	                        <img src="img/items/item-1-placeholder.png" data-src="img/items/item-8.jpg" class="lazy" alt="" width="533" height="400">
+	                        <img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}" data-src="{{ url_for('static', filename='img/items/item-8.jpg') }}			" class="lazy" alt="" width="533" height="400">
 	                        <a href="detail-page.html" class="strip_info">
 	                            <div class="item_title">
 	                                <h3>Lost Women</h3>
@@ -725,7 +725,7 @@
 	                            <a href="author.html" class="author">
 	                                <div class="author_thumb">
 	                                    <figure>
-	                                        <img src="img/avatar-placeholder.png" data-src="img/avatar2.jpg" alt="" class="lazy" width="100" height="100"></figure>
+	                                        <img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar2.jpg') }}" alt="" class="lazy" width="100" height="100"></figure>
 	                                </div>
 	                                <h6>@Jhonny_Bet</h6>
 	                            </a>
@@ -753,7 +753,7 @@
 	            <div class="row justify-content-md-center how_2">
 	                <div class="col-lg-5 text-center">
 	                    <figure class="mb-5">
-	                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="img/web_wireframe.svg" alt="" class="img-fluid lazy" width="360" height="380">
+	                        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ url_for('static', filename='img/web_wireframe.svg') }}" alt="" class="img-fluid lazy" width="360" height="380">
 	                    </figure>
 	                </div>
 	                <div class="col-lg-5">
@@ -793,7 +793,7 @@
 			    <div class="col-lg-4" data-cue="slideInUp">
 			        <article class="blog">
 			            <figure>
-			                <a href="blog-post.html"><img src="img/item-blog-placeholder.png" data-src="img/blog-5.jpg" alt="" class="lazy" width="800" height="533">
+			                <a href="blog-post.html"><img src="{{ url_for('static', filename='img/item-blog-placeholder.png') }}" data-src="{{ url_for('static', filename='img/blog-5.jpg') }}" alt="" class="lazy" width="800" height="533">
 			                </a>
 			            </figure>
 			            <div class="post_info">
@@ -802,7 +802,7 @@
 			                <p>Quodsi sanctus pro eu, ne audire scripserit quo. Vel an enim offendit salutandi, in eos quod omnes epicurei, ex veri qualisque scriptorem mei.</p>
 			                <ul>
 			                    <li>
-			                        <div class="thumb"><img src="img/avatar-placeholder.png" data-src="img/avatar2.jpg" class="lazy" alt="" width="68" height="68"></div> Admin
+			                        <div class="thumb"><img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar2.jpg') }}" class="lazy" alt="" width="68" height="68"></div> Admin
 			                    </li>
 			                    <li><i class="bi bi-chat"></i>20</li>
 			                </ul>
@@ -813,7 +813,7 @@
 			    <div class="col-lg-4" data-cue="slideInUp">
 			        <article class="blog">
 			            <figure>
-			                <a href="blog-post.html"><img src="img/item-blog-placeholder.png" data-src="img/blog-4.jpg" alt="" class="lazy" width="800" height="533">
+			                <a href="blog-post.html"><img src="{{ url_for('static', filename='img/item-blog-placeholder.png') }}" data-src="{{ url_for('static', filename='img/blog-4.jpg') }}" alt="" class="lazy" width="800" height="533">
 			                </a>
 			            </figure>
 			            <div class="post_info">
@@ -822,7 +822,7 @@
 			                <p>Quodsi sanctus pro eu, ne audire scripserit quo. Vel an enim offendit salutandi, in eos quod omnes epicurei, ex veri qualisque scriptorem mei.</p>
 			                <ul>
 			                    <li>
-			                        <div class="thumb"><img src="img/avatar-placeholder.png" data-src="img/avatar2.jpg" class="lazy" alt="" width="68" height="68"></div> Admin
+			                        <div class="thumb"><img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar2.jpg') }}" class="lazy" alt="" width="68" height="68"></div> Admin
 			                    </li>
 			                    <li><i class="bi bi-chat"></i>20</li>
 			                </ul>
@@ -833,7 +833,7 @@
 			    <div class="col-lg-4" data-cue="slideInUp">
 			        <article class="blog">
 			            <figure>
-			                <a href="blog-post.html"><img src="img/item-blog-placeholder.png" data-src="img/blog-6.jpg" alt="" class="lazy" width="800" height="533">
+			                <a href="blog-post.html"><img src="{{ url_for('static', filename='img/item-blog-placeholder.png') }}" data-src="{{ url_for('static', filename='img/blog-6.jpg') }}" alt="" class="lazy" width="800" height="533">
 			                </a>
 			            </figure>
 			            <div class="post_info">
@@ -842,7 +842,7 @@
 			                <p>Quodsi sanctus pro eu, ne audire scripserit quo. Vel an enim offendit salutandi, in eos quod omnes epicurei, ex veri qualisque scriptorem mei.</p>
 			                <ul>
 			                    <li>
-			                        <div class="thumb"><img src="img/avatar-placeholder.png" data-src="img/avatar2.jpg" class="lazy" alt="" width="68" height="68"></div> Admin
+			                        <div class="thumb"><img src="{{ url_for('static', filename='img/avatar-placeholder.png') }}" data-src="{{ url_for('static', filename='img/avatar2.jpg') }}	" class="lazy" alt="" width="68" height="68"></div> Admin
 			                    </li>
 			                    <li><i class="bi bi-chat"></i>20</li>
 			                </ul>
@@ -910,16 +910,16 @@
 				    <div class="follow_us">
 				        <ul>
 				            <li>
-				                <a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="img/twitter_icon.svg" alt="" class="lazy"></a>
+				                <a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ url_for('static', filename='img/twitter_icon.svg') }}" alt="" class="lazy"></a>
 				            </li>
 				            <li>
-				                <a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="img/facebook_icon.svg" alt="" class="lazy"></a>
+				                <a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ url_for('static', filename='img/facebook_icon.svg') }}" alt="" class="lazy"></a>
 				            </li>
 				            <li>
-				                <a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="img/instagram_icon.svg" alt="" class="lazy"></a>
+				                <a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ url_for('static', filename='img/instagram_icon.svg') }}" alt="" class="lazy"></a>
 				            </li>
 				            <li>
-				                <a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="img/youtube_icon.svg" alt="" class="lazy"></a>
+				                <a href="#0"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ url_for('static', filename='img/youtube_icon.svg') }}" alt="" class="lazy"></a>
 				            </li>
 				        </ul>
 				    </div>
