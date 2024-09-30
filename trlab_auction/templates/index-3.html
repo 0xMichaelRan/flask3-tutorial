@@ -13,7 +13,8 @@
 <main>
 
 	<div class="hero_single version_2 jarallax"
-		data-jarallax-video="mp4:./video/intro_blue.mp4,webm:./video/intro_blue.webm,ogv:./video/intro_blue.ogv">
+		data-jarallax-video="mp4:{{ url_for('static', filename='video/intro_blue.mp4') }}">
+		<!-- data-jarallax-video="mp4:./video/intro_blue.mp4,webm:./video/intro_blue.webm,ogv:./video/intro_blue.ogv"> -->
 		<div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.5)">
 			<div class="container">
 				<div class="row justify-content-center text-center">
@@ -440,7 +441,7 @@
 			</div>
 			<!-- /row -->
 
-			<div class="banner mt-5 lazy" data-bg="url(img/banner_bg.jpg)" data-cue="slideInUp">
+			<div class="banner mt-5 lazy" data-bg="url({{ url_for('static', filename='img/banner_bg.jpg') }})" data-cue="slideInUp">
 				<div class="d-flex align-items-center opacity-mask justify-content-between p-5"
 					data-opacity-mask="rgba(0, 0, 0, 0.2)">
 					<div>
