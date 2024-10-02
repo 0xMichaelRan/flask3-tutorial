@@ -20,7 +20,7 @@ Edit Profile
 
     <div class="container margin_30_40">
         <div class="row">
-            
+
             <!-- row -->
             <div class="col-lg-3">
                 <div class="main_profile edit_section">
@@ -105,14 +105,14 @@ Edit Profile
                                     <label for="avatar-upload" class="mb-0 w-100">
                                         <div class="d-flex flex-column align-items-center cursor-pointer">
                                             <i class="bi bi-file-earmark-arrow-up"></i>
-                                            <div>PNG, GIF, JPG. Max 500Kb</div>
+                                            <div id="avatar-file-name">PNG, GIF, JPG. Max 500Kb</div>
                                         </div>
                                     </label>
                                 </div>
                                 {% if form.photo.errors %}
-                                    {% for error in form.photo.errors %}
-                                        <small class="text-danger">{{ error }}</small>
-                                    {% endfor %}
+                                {% for error in form.photo.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
                                 {% endif %}
                             </div>
                         </div>
@@ -140,4 +140,12 @@ Edit Profile
         <!-- /container -->
 </main>
 <!-- /main -->
+
+<!-- Add this script at the end of your file, before the closing </body> tag -->
+<script>
+    document.getElementById('avatar-upload').addEventListener('change', function (e) {
+        var fileName = e.target.files[0].name;
+        document.getElementById('avatar-file-name').textContent = fileName;
+    });
+</script>
 {% endblock %}

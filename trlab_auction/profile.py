@@ -1,12 +1,11 @@
-import os
-import uuid
-
-import boto3
-from botocore.exceptions import ClientError
-from flask import flask
+import flask
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileSize
 from werkzeug.utils import secure_filename
+import boto3
+import os
+from botocore.exceptions import ClientError
+import uuid
 
 bp = flask.Blueprint("profile", __name__, url_prefix="/profile")
 
@@ -28,28 +27,29 @@ class ProfilePhotoForm(FlaskForm):
         ],
     )
 
-
-def upload_file_to_s3(file, bucket_name):
+def upload_file_to_s3(file, bucket_name, user_id):
     # Remove debugging prints in production
     print(f"AWS Access Key ID: {os.environ.get('AWS_ACCESS_KEY_ID')}")
     print(f"AWS Secret Access Key: {os.environ.get('AWS_SECRET_ACCESS_KEY')}")
 
     filename = secure_filename(file.filename)
-    unique_filename = f"{uuid.uuid4()}_{filename}"
+    file_extension = os.path.splitext(filename)[1]
+    unique_filename = f"{user_id}_{uuid.uuid4()}{file_extension}"
+    s3_key = f"profile_photo/{unique_filename}"
 
     try:
         s3_client.upload_fileobj(
             file,
             bucket_name,
-            unique_filename,
+            s3_key,
             ExtraArgs={"ContentType": file.content_type},
         )
-        print(f"File uploaded successfully: {unique_filename}")
+        print(f"File uploaded successfully: {s3_key}")
     except ClientError as e:
         print(f"Error uploading file: {e}")
         return None
 
-    return f"https://{bucket_name}.s3.amazonaws.com/{unique_filename}"
+    return f"https://{bucket_name}.s3.amazonaws.com/{s3_key}"
 
 
 @bp.route("/edit", methods=("GET", "POST"))
@@ -57,7 +57,7 @@ def edit():
     form = ProfilePhotoForm()
     if form.validate_on_submit():
         if form.photo.data:
-            file_url = upload_file_to_s3(form.photo.data, BUCKET_NAME)
+            file_url = upload_file_to_s3(form.photo.data, BUCKET_NAME, "USER_ID")
             if file_url:
                 # Update user's profile photo URL in the database
                 # This is a placeholder - replace with your actual database update logic
