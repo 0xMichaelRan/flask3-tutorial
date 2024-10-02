@@ -1,5 +1,9 @@
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
+
 from flask import Flask, render_template
 from . import database
 from .auth import bp as auth_bp
