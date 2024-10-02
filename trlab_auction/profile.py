@@ -16,6 +16,7 @@ s3_client = boto3.client(
 )
 
 BUCKET_NAME = "theperfectbucket"
+PROFILE_PHOTO_FOLDER = "profile_photos"
 
 
 class ProfilePhotoForm(FlaskForm):
@@ -23,19 +24,22 @@ class ProfilePhotoForm(FlaskForm):
         "Upload Avatar",
         validators=[
             FileAllowed(["jpg", "png", "jpeg", "gif"], "Images only!"),
-            FileSize(max_size=500 * 1024, message="File size must be less than 500KB."),
+            FileSize(
+                max_size=5 * 1024 * 1024, message="File size must be less than 5MB."
+            ),
         ],
     )
 
-def upload_file_to_s3(file, bucket_name, user_id):
+
+def upload_file_to_s3(file, bucket_name):
     # Remove debugging prints in production
     print(f"AWS Access Key ID: {os.environ.get('AWS_ACCESS_KEY_ID')}")
     print(f"AWS Secret Access Key: {os.environ.get('AWS_SECRET_ACCESS_KEY')}")
 
     filename = secure_filename(file.filename)
     file_extension = os.path.splitext(filename)[1]
-    unique_filename = f"{user_id}_{uuid.uuid4()}{file_extension}"
-    s3_key = f"profile_photo/{unique_filename}"
+    unique_filename = f"{uuid.uuid4()}{file_extension}"
+    s3_key = f"{PROFILE_PHOTO_FOLDER}/{unique_filename}"
 
     try:
         s3_client.upload_fileobj(
@@ -57,7 +61,7 @@ def edit():
     form = ProfilePhotoForm()
     if form.validate_on_submit():
         if form.photo.data:
-            file_url = upload_file_to_s3(form.photo.data, BUCKET_NAME, "USER_ID")
+            file_url = upload_file_to_s3(form.photo.data, BUCKET_NAME)
             if file_url:
                 # Update user's profile photo URL in the database
                 # This is a placeholder - replace with your actual database update logic
