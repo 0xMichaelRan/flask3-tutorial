@@ -1,5 +1,4 @@
 Flaskr will have two blueprints:
 
-1. for authentication functions
-1. for blog posts functions
-
+1. /auth.py for authentication functions
+1. /blog.py for blog posts functions
