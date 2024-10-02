@@ -32,7 +32,7 @@ Upload Artwork
                             </figure>
                         </div>
                     </div>
-                    <h1>@George_lucas</h1>
+                    <h1>@{{ g.user.username }}</h1>
                     <ul>
                         <li><a href="{{ url_for('profile.edit') }}"><i class="bi bi-person"></i>Edit profile</a></li>
                         <li><a href="{{ url_for('profile.upload') }}" class="active"><i
