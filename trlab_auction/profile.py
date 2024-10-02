@@ -7,6 +7,7 @@ from werkzeug.exceptions import NotFound
 import boto3
 import os
 import uuid
+from botocore.exceptions import ClientError
 
 from trlab_auction.database import get_db
 from trlab_auction.auth import login_required
@@ -31,28 +32,30 @@ PROFILE_PHOTO_FOLDER = "profile_photos"
 PROFILE_COVER_FOLDER = "profile_covers"
 
 
-class ProfilePhotoForm(FlaskForm):
-    photo = FileField(
+# Profile and Cover Photo Form
+class ProfilePhotosForm(FlaskForm):
+    profile_photo = FileField(
         "Upload Avatar",
         validators=[
             FileAllowed(["jpg", "png", "jpeg", "gif"], "Images only!"),
-            FileSize(
-                max_size=5 * 1024 * 1024, message="File size must be less than 5MB."
-            ),
-        ],
+            FileSize(max_size=5 * 1024 * 1024, message="File size must be less than 5MB.")
+        ]
+    )
+    cover_photo = FileField(
+        "Upload Cover",
+        validators=[
+            FileAllowed(["jpg", "png", "jpeg", "gif"], "Images only!"),
+            FileSize(max_size=10 * 1024 * 1024, message="File size must be less than 10MB.")
+        ]
     )
 
 
-def upload_file_to_s3(file, bucket_name):
-    # Remove debugging prints in production
-    print(f"AWS Access Key ID: {os.environ.get('AWS_ACCESS_KEY_ID')}")
-    print(f"AWS Secret Access Key: {os.environ.get('AWS_SECRET_ACCESS_KEY')}")
-
+def upload_file_to_s3(file, bucket_name, folder):
     filename = secure_filename(file.filename)
     file_extension = os.path.splitext(filename)[1]
     user_id = flask.session.get("user_id")  # Get user_id from session
     unique_filename = f"{user_id}_{uuid.uuid4()}{file_extension}"
-    s3_key = f"{PROFILE_PHOTO_FOLDER}/{unique_filename}"
+    s3_key = f"{folder}/{unique_filename}"
 
     try:
         s3_client.upload_fileobj(
@@ -69,32 +72,48 @@ def upload_file_to_s3(file, bucket_name):
     return f"https://{bucket_name}.s3.amazonaws.com/{s3_key}"
 
 
+# Profile Photo Edit Route
 @bp.route("/edit", methods=("GET", "POST"))
 def edit():
-    form = ProfilePhotoForm()
+    form = ProfilePhotosForm()
     if form.validate_on_submit():
-        if form.photo.data:
+        db = get_db()
+        user_id = session.get('user_id')
+        user = db.execute('SELECT * FROM user WHERE id = ?', (user_id,)).fetchone()
+        
+        if not user:
+            raise NotFound("User not found.")
+        
+        updates = {}
+        
+        if form.profile_photo.data:
             try:
-                file_url = upload_file_to_s3(form.photo.data, BUCKET_NAME)
+                file_url = upload_file_to_s3(form.profile_photo.data, BUCKET_NAME, PROFILE_PHOTO_FOLDER)
                 if file_url:
-                    db = get_db()
-                    user_id = session.get('user_id')
-                    user = db.execute('SELECT * FROM user WHERE id = ?', (user_id,)).fetchone()
-                    if user:
-                        db.execute(
-                            'UPDATE user SET profile_photo_url = ? WHERE id = ?',
-                            (file_url, user_id)
-                        )
-                        db.commit()
-                        flash("Profile photo updated successfully!", "success")
-                    else:
-                        raise NotFound("User not found.")
+                    updates['profile_photo_url'] = file_url
                 else:
-                    flash("Failed to upload the photo. Please try again.", "error")
+                    flash("Failed to upload the profile photo. Please try again.", "error")
             except Exception as e:
-                flash(f"An error occurred: {str(e)}", "error")
-        else:
-            flash("No photo was selected for upload.", "warning")
+                flash(f"An error occurred while uploading profile photo: {str(e)}", "error")
+        
+        if form.cover_photo.data:
+            try:
+                file_url = upload_file_to_s3(form.cover_photo.data, BUCKET_NAME, PROFILE_COVER_FOLDER)
+                if file_url:
+                    updates['cover_photo_url'] = file_url
+                else:
+                    flash("Failed to upload the cover photo. Please try again.", "error")
+            except Exception as e:
+                flash(f"An error occurred while uploading cover photo: {str(e)}", "error")
+        
+        if updates:
+            update_query = 'UPDATE user SET ' + ', '.join(f'{key} = ?' for key in updates.keys()) + ' WHERE id = ?'
+            db.execute(update_query, (*updates.values(), user_id))
+            db.commit()
+            flash("Profile updated successfully! It may take a while to show up.", "success")
+        elif not form.profile_photo.data and not form.cover_photo.data:
+            flash("No photos were selected for upload.", "warning")
+    
     elif form.errors:
         for field, errors in form.errors.items():
             for error in errors:
@@ -103,11 +122,13 @@ def edit():
     return render_template("profile/edit-profile.html", form=form)
 
 
+# Account Settings Route
 @bp.route("/settings", methods=("GET", "POST"))
 def settings():
     return flask.render_template("profile/account-settings.html")
 
 
+# Upload Artwork Route
 @bp.route("/upload", methods=("GET", "POST"))
 def upload():
     return flask.render_template("profile/upload-artwork.html")

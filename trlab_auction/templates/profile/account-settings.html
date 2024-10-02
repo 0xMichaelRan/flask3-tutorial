@@ -11,7 +11,12 @@ Account Settings
 {% block main %}
 <main>
     <div class="hero_single inner_pages author_page jarallax" data-jarallax>
-        <img class="jarallax-img" src="{{ url_for('static', filename='img/hero_general.jpg') }}" alt="">
+        {% if g.user and g.user.cover_photo_url %}
+        <img class="jarallax-img" src="{{ g.user.cover_photo_url }}" alt="User Cover Photo">
+        {% else %}
+        <img class="jarallax-img" src="{{ url_for('static', filename='img/hero_general.jpg') }}"
+            alt="Default Cover Photo">
+        {% endif %}
         <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.4)">
         </div>
         <div class="wave hero"></div>
@@ -35,9 +40,10 @@ Account Settings
                     <h1>@{{ g.user.username }}</h1>
                     <ul>
                         <li><a href="{{ url_for('profile.edit') }}"><i class="bi bi-person"></i>Edit profile</a></li>
-                        <li><a href="{{ url_for('profile.upload') }}"><i
-                                    class="bi bi-file-earmark-arrow-up"></i>Upload Artwork</a></li>
-                        <li><a href="{{ url_for('profile.settings') }}" class="active"><i class="bi bi-gear"></i>Account settings</a>
+                        <li><a href="{{ url_for('profile.upload') }}"><i class="bi bi-file-earmark-arrow-up"></i>Upload
+                                Artwork</a></li>
+                        <li><a href="{{ url_for('profile.settings') }}" class="active"><i class="bi bi-gear"></i>Account
+                                settings</a>
                         </li>
                         <li><a href="{{ url_for('auth.logout') }}"><i class="bi bi-box-arrow-right"></i>Log out</a></li>
                     </ul>
