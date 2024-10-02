@@ -1,3 +1,5 @@
+from trlab_auction.database import get_db
+
 import flask
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileSize
@@ -7,6 +9,8 @@ import os
 from botocore.exceptions import ClientError
 import uuid
 from trlab_auction.auth import login_required
+from flask import flash, render_template, session, g
+from werkzeug.exceptions import NotFound
 
 bp = flask.Blueprint("profile", __name__, url_prefix="/profile")
 
@@ -72,16 +76,33 @@ def edit():
     form = ProfilePhotoForm()
     if form.validate_on_submit():
         if form.photo.data:
-            file_url = upload_file_to_s3(form.photo.data, BUCKET_NAME)
-            if file_url:
-                # Update user's profile photo URL in the database
-                # This is a placeholder - replace with your actual database update logic
-                # current_user.profile_photo_url = file_url
-                # db.session.commit()
-                flask.flash("Profile photo updated successfully!", "success")
-            else:
-                flask.flash("Error uploading profile photo.", "error")
-    return flask.render_template("profile/edit-profile.html", form=form)
+            try:
+                file_url = upload_file_to_s3(form.photo.data, BUCKET_NAME)
+                if file_url:
+                    db = get_db()
+                    user_id = session.get('user_id')
+                    user = db.execute('SELECT * FROM user WHERE id = ?', (user_id,)).fetchone()
+                    if user:
+                        db.execute(
+                            'UPDATE user SET profile_photo_url = ? WHERE id = ?',
+                            (file_url, user_id)
+                        )
+                        db.commit()
+                        flash("Profile photo updated successfully!", "success")
+                    else:
+                        raise NotFound("User not found.")
+                else:
+                    flash("Failed to upload the photo. Please try again.", "error")
+            except Exception as e:
+                flash(f"An error occurred: {str(e)}", "error")
+        else:
+            flash("No photo was selected for upload.", "warning")
+    elif form.errors:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"{field.capitalize()}: {error}", "error")
+
+    return render_template("profile/edit-profile.html", form=form)
 
 
 @bp.route("/settings", methods=("GET", "POST"))
