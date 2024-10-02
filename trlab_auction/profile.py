@@ -1,23 +1,33 @@
-import flask
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from werkzeug.utils import secure_filename
-import boto3
 import os
-from botocore.exceptions import ClientError
 import uuid
+
+import boto3
+from botocore.exceptions import ClientError
+from flask import flask
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed, FileSize
+from werkzeug.utils import secure_filename
 
 bp = flask.Blueprint("profile", __name__, url_prefix="/profile")
 
-s3_client = boto3.client('s3',
-    aws_access_key_id=os.environ.get('AWS_ACCESS_KEY_ID'),
-    aws_secret_access_key=os.environ.get('AWS_SECRET_ACCESS_KEY')
+s3_client = boto3.client(
+    "s3",
+    aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"),
 )
 
-BUCKET_NAME = 'theperfectbucket'
+BUCKET_NAME = "theperfectbucket"
+
 
 class ProfilePhotoForm(FlaskForm):
-    photo = FileField('Profile Photo', validators=[FileAllowed(['jpg', 'png', 'jpeg', 'gif'], 'Images only!')])
+    photo = FileField(
+        "Upload Avatar",
+        validators=[
+            FileAllowed(["jpg", "png", "jpeg", "gif"], "Images only!"),
+            FileSize(max_size=500 * 1024, message="File size must be less than 500KB."),
+        ],
+    )
+
 
 def upload_file_to_s3(file, bucket_name):
     # Remove debugging prints in production
@@ -26,21 +36,19 @@ def upload_file_to_s3(file, bucket_name):
 
     filename = secure_filename(file.filename)
     unique_filename = f"{uuid.uuid4()}_{filename}"
-    
+
     try:
         s3_client.upload_fileobj(
             file,
             bucket_name,
             unique_filename,
-            ExtraArgs={
-                "ContentType": file.content_type
-            }
+            ExtraArgs={"ContentType": file.content_type},
         )
         print(f"File uploaded successfully: {unique_filename}")
     except ClientError as e:
         print(f"Error uploading file: {e}")
         return None
-    
+
     return f"https://{bucket_name}.s3.amazonaws.com/{unique_filename}"
 
 
@@ -55,12 +63,10 @@ def edit():
                 # This is a placeholder - replace with your actual database update logic
                 # current_user.profile_photo_url = file_url
                 # db.session.commit()
-                flask.flash('Profile photo updated successfully!', 'success')
+                flask.flash("Profile photo updated successfully!", "success")
             else:
-                flask.flash('Error uploading profile photo.', 'error')
+                flask.flash("Error uploading profile photo.", "error")
     return flask.render_template("profile/edit-profile.html", form=form)
-
-# Keep your existing routes for settings and upload
 
 
 @bp.route("/settings", methods=("GET", "POST"))

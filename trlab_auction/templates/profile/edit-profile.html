@@ -20,6 +20,8 @@ Edit Profile
 
     <div class="container margin_30_40">
         <div class="row">
+            
+            <!-- row -->
             <div class="col-lg-3">
                 <div class="main_profile edit_section">
                     <div class="author">
@@ -47,6 +49,7 @@ Edit Profile
                     </ul>
                 </div>
             </div>
+
             <!-- row -->
             <div class="col-lg-9 ps-lg-5">
                 <div class="main_title version_2">
@@ -56,7 +59,7 @@ Edit Profile
                 <form method="POST" enctype="multipart/form-data">
                     {{ form.csrf_token }}
 
-                    <!-- /row -->
+                    <!-- section for user info -->
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -90,30 +93,30 @@ Edit Profile
                         </div>
                     </div>
 
-                    <!-- /row -->
+                    <!-- section for profile photo and cover photo -->
                     <hr class="mt-3 mb-5">
                     <div class="row">
+                        <!-- upload profile photo -->
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>Upload Avatar</label>
-                                {{ form.photo(class="form-control-file") }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- /row -->
-                    <hr class="mt-3 mb-5">
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Upload Avatar </label>
+                                <label>{{ form.photo.label }}</label>
                                 <div class="file_upload">
-                                    <input type="file">
-                                    <i class="bi bi-file-earmark-arrow-up"></i>
-                                    <div>PNG, GIF, JPG. Max 500Kb</div>
+                                    {{ form.photo(class="d-none", id="avatar-upload") }}
+                                    <label for="avatar-upload" class="mb-0 w-100">
+                                        <div class="d-flex flex-column align-items-center cursor-pointer">
+                                            <i class="bi bi-file-earmark-arrow-up"></i>
+                                            <div>PNG, GIF, JPG. Max 500Kb</div>
+                                        </div>
+                                    </label>
                                 </div>
+                                {% if form.photo.errors %}
+                                    {% for error in form.photo.errors %}
+                                        <small class="text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                {% endif %}
                             </div>
                         </div>
+                        <!-- upload cover -->
                         <div class="col-lg-9">
                             <div class="form-group">
                                 <label>Upload Cover</label>
