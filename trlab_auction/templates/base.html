@@ -53,10 +53,10 @@
                         height="35" class="light">
                 </a>
             </div>
-            <ul class="top_menu">
+            <ul class="top_menu" style="display: flex; align-items: center; padding-top: 2px;">
 
                 {% if g.user %}
-                <li><a href="{{ url_for('profile.edit') }}" class="btn_access">{{ g.user['username']|capitalize }}</a>
+                <li><a href="{{ url_for('profile.edit') }}" class="btn_1 small">{{ g.user['username']|capitalize }}</a>
                 </li>
                 <li><a href="{{ url_for('auth.logout') }}" class="btn_access">Logout</a></li>
                 {% else %}
