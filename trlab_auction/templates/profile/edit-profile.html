@@ -47,99 +47,94 @@ Edit Profile
                     </ul>
                 </div>
             </div>
+            <!-- row -->
             <div class="col-lg-9 ps-lg-5">
                 <div class="main_title version_2">
                     <span><em></em></span>
                     <h2>Edit profile</h2>
                 </div>
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Username</label>
-                            <input type="text" class="form-control" placeholder="@Geroge_lucas">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Email Address</label>
-                            <input type="email" class="form-control" placeholder="george@domain.com">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Bio</label>
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Instagram username</label>
-                            <input type="text" class="form-control" placeholder="@Geroge_lucas">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Youtube username</label>
-                            <input type="text" class="form-control" placeholder="@Geroge_lucas">
-                        </div>
-                    </div>
-                </div>
-                <!-- /row -->
-                <hr class="mt-3 mb-5">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label>Upload Avatar </label>
-                            <div class="file_upload">
-                                <input type="file">
-                                <i class="bi bi-file-earmark-arrow-up"></i>
-                                <div>PNG, GIF, JPG. Max 500Kb</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-9">
-                        <div class="form-group">
-                            <label>Upload Cover</label>
-                            <div class="file_upload">
-                                <input type="file">
-                                <i class="bi bi-file-earmark-arrow-up"></i>
-                                <div>PNG, GIF, JPG. Max 1MB</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <form method="POST" enctype="multipart/form-data">
+                    {{ form.csrf_token }}
 
-                <!-- row -->
-                <div class="col-lg-9 ps-lg-5">
-                    <div class="main_title version_2">
-                        <span><em></em></span>
-                        <h2>Edit profile</h2>
-                    </div>
-                    <form method="POST" enctype="multipart/form-data">
-                        {{ form.csrf_token }}
-                        <div class="row mb-4">
-                            <!-- Your existing form fields -->
+                    <!-- /row -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" class="form-control" placeholder="@Geroge_lucas">
+                            </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <div class="form-group">
-                                    <label>Upload Avatar</label>
-                                    {{ form.photo(class="form-control-file") }}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" class="form-control" placeholder="george@domain.com">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Bio</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Instagram username</label>
+                                <input type="text" class="form-control" placeholder="@Geroge_lucas">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Youtube username</label>
+                                <input type="text" class="form-control" placeholder="@Geroge_lucas">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /row -->
+                    <hr class="mt-3 mb-5">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Upload Avatar</label>
+                                {{ form.photo(class="form-control-file") }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /row -->
+                    <hr class="mt-3 mb-5">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Upload Avatar </label>
+                                <div class="file_upload">
+                                    <input type="file">
+                                    <i class="bi bi-file-earmark-arrow-up"></i>
+                                    <div>PNG, GIF, JPG. Max 500Kb</div>
                                 </div>
                             </div>
                         </div>
-                        <p class="text-end mt-4"><button type="submit" class="btn_1">Save changes</button></p>
-                    </form>
-                </div>
-                <!-- /row -->
+                        <div class="col-lg-9">
+                            <div class="form-group">
+                                <label>Upload Cover</label>
+                                <div class="file_upload">
+                                    <input type="file">
+                                    <i class="bi bi-file-earmark-arrow-up"></i>
+                                    <div>PNG, GIF, JPG. Max 1MB</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <p class="text-end mt-4"><a href="#0" class="btn_1">Save changes</a></p>
-
+                    <!-- /row -->
+                    <p class="text-end mt-4">
+                        <button type="submit" class="btn_1">Save changes</button>
+                    </p>
+                </form>
             </div>
+
         </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
+        <!-- /container -->
 </main>
 <!-- /main -->
 {% endblock %}

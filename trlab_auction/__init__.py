@@ -1,13 +1,13 @@
 import os
-
-from dotenv import load_dotenv
-load_dotenv()
-
-
 from flask import Flask, render_template
+from dotenv import load_dotenv
+
 from . import database
 from .auth import bp as auth_bp
 from .profile import bp as profile_bp
+
+# Load environment variables
+load_dotenv()
 
 
 # The application factory function
