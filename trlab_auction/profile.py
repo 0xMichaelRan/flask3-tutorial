@@ -1,17 +1,15 @@
-from trlab_auction.database import get_db
-
 import flask
+from flask import flash, render_template, session, g
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileSize
 from werkzeug.utils import secure_filename
+from werkzeug.exceptions import NotFound
 import boto3
 import os
-from botocore.exceptions import ClientError
 import uuid
-from trlab_auction.auth import login_required
-from flask import flash, render_template, session, g
-from werkzeug.exceptions import NotFound
 
+from trlab_auction.database import get_db
+from trlab_auction.auth import login_required
 bp = flask.Blueprint("profile", __name__, url_prefix="/profile")
 
 
