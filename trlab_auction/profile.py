@@ -6,9 +6,18 @@ import boto3
 import os
 from botocore.exceptions import ClientError
 import uuid
+from trlab_auction.auth import login_required
 
 bp = flask.Blueprint("profile", __name__, url_prefix="/profile")
 
+
+@bp.before_request
+@login_required
+def before_request():
+    pass
+
+
+# Initialize S3 client
 s3_client = boto3.client(
     "s3",
     aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
@@ -17,6 +26,7 @@ s3_client = boto3.client(
 
 BUCKET_NAME = "theperfectbucket"
 PROFILE_PHOTO_FOLDER = "profile_photos"
+PROFILE_COVER_FOLDER = "profile_covers"
 
 
 class ProfilePhotoForm(FlaskForm):
@@ -38,7 +48,8 @@ def upload_file_to_s3(file, bucket_name):
 
     filename = secure_filename(file.filename)
     file_extension = os.path.splitext(filename)[1]
-    unique_filename = f"{uuid.uuid4()}{file_extension}"
+    user_id = flask.session.get("user_id")  # Get user_id from session
+    unique_filename = f"{user_id}_{uuid.uuid4()}{file_extension}"
     s3_key = f"{PROFILE_PHOTO_FOLDER}/{unique_filename}"
 
     try:
