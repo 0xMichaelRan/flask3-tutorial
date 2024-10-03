@@ -1,0 +1,6 @@
+Flask==3.0.3
+Flask-WTF==1.2.1
+Werkzeug==3.0.4
+boto3==1.35.30
+WTForms==3.1.2
+email_validator==2.0.0

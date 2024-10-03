@@ -81,32 +81,52 @@ Edit Profile
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Username</label>
-                                <input type="text" class="form-control" placeholder="@Geroge_lucas">
+                                {{ form.username.label }}
+                                {{ form.username(class="form-control", placeholder="@" + (g.user.username if g.user else
+                                'Username')) }}
+                                {% for error in form.username.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Email Address</label>
-                                <input type="email" class="form-control" placeholder="george@domain.com">
+                                {{ form.email.label }}
+                                {{ form.email(class="form-control", placeholder=g.user.email if g.user else 'Email
+                                Address') }}
+                                {% for error in form.email.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label>Bio</label>
-                                <input type="text" class="form-control">
+                                {{ form.bio.label }}
+                                {{ form.bio(class="form-control", placeholder=g.user['bio'] if 'bio' in g.user.keys()
+                                else 'Your bio here...') }}
+                                {% for error in form.bio.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Instagram username</label>
-                                <input type="text" class="form-control" placeholder="@Geroge_lucas">
+                                {{ form.instagram_id.label }}
+                                {{ form.instagram_id(class="form-control", placeholder="@" + (g.user['instagram_id'] if 
+                                g.user and 'instagram_id' in g.user.keys() and g.user['instagram_id'] else 'Instagram ID')) }}
+                                {% for error in form.instagram_id.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Youtube username</label>
-                                <input type="text" class="form-control" placeholder="@Geroge_lucas">
+                                {{ form.youtube_id.label }}
+                                {{ form.youtube_id(class="form-control", placeholder="@" + (g.user['youtube_id'] if
+                                g.user and 'youtube_id' in g.user.keys() and g.user['youtube_id'] else 'Youtube ID')) }}
+                                {% for error in form.youtube_id.errors %}
+                                <small class="text-danger">{{ error }}</small>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>
@@ -116,7 +136,7 @@ Edit Profile
                         <!-- upload profile photo -->
                         <div class="col-lg-3">
                             <div class="form-group">
-                                <label>{{ form.profile_photo.label }}</label>
+                                {{ form.profile_photo.label }}
                                 <div class="file_upload">
                                     {{ form.profile_photo(class="d-none", id="avatar-upload") }}
                                     <label for="avatar-upload" class="mb-0 w-100">
@@ -126,18 +146,16 @@ Edit Profile
                                         </div>
                                     </label>
                                 </div>
-                                {% if form.profile_photo.errors %}
                                 {% for error in form.profile_photo.errors %}
                                 <small class="text-danger">{{ error }}</small>
                                 {% endfor %}
-                                {% endif %}
                             </div>
                         </div>
 
                         <!-- upload cover -->
                         <div class="col-lg-9">
                             <div class="form-group">
-                                <label>{{ form.cover_photo.label }}</label>
+                                {{ form.cover_photo.label }}
                                 <div class="file_upload">
                                     {{ form.cover_photo(class="d-none", id="cover-upload") }}
                                     <label for="cover-upload" class="mb-0 w-100">
@@ -147,11 +165,9 @@ Edit Profile
                                         </div>
                                     </label>
                                 </div>
-                                {% if form.cover_photo.errors %}
                                 {% for error in form.cover_photo.errors %}
                                 <small class="text-danger">{{ error }}</small>
                                 {% endfor %}
-                                {% endif %}
                             </div>
                         </div>
                     </div>

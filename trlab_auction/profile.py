@@ -1,5 +1,5 @@
 import flask
-from flask import flash, render_template, session, g
+from flask import flash, render_template, session, g, request, redirect, url_for
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileSize
 from werkzeug.utils import secure_filename
@@ -11,6 +11,9 @@ from botocore.exceptions import ClientError
 
 from trlab_auction.database import get_db
 from trlab_auction.auth import login_required
+from wtforms import StringField, TextAreaField
+from wtforms.validators import DataRequired, Length, Email
+
 bp = flask.Blueprint("profile", __name__, url_prefix="/profile")
 
 
@@ -32,8 +35,12 @@ PROFILE_PHOTO_FOLDER = "profile_photos"
 PROFILE_COVER_FOLDER = "profile_covers"
 
 
-# Profile and Cover Photo Form
-class ProfilePhotosForm(FlaskForm):
+class ProfileForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=3, max=20)])
+    email = StringField('Email Address', validators=[DataRequired(), Email()])
+    bio = TextAreaField('Bio', validators=[Length(max=500)])
+    instagram_id = StringField('Instagram', validators=[Length(max=30)])
+    youtube_id = StringField('Youtube', validators=[Length(max=30)])
     profile_photo = FileField(
         "Upload Avatar",
         validators=[
@@ -72,19 +79,31 @@ def upload_file_to_s3(file, bucket_name, folder):
     return f"https://{bucket_name}.s3.amazonaws.com/{s3_key}"
 
 
-# Profile Photo Edit Route
 @bp.route("/edit", methods=("GET", "POST"))
 def edit():
-    form = ProfilePhotosForm()
+    form = ProfileForm()
+    db = get_db()
+    user_id = session.get('user_id')
+    user = db.execute('SELECT * FROM user WHERE id = ?', (user_id,)).fetchone()
+    
+    if not user:
+        raise NotFound("User not found.")
+    
+    if request.method == 'GET':
+        form.username.data = user['username']
+        form.email.data = user['email']
+        form.bio.data = user['bio'] if 'bio' in user.keys() else ''
+        form.instagram_id.data = user['instagram_id'] if 'instagram_id' in user.keys() else ''
+        form.youtube_id.data = user['youtube_id'] if 'youtube_id' in user.keys() else ''
+    
     if form.validate_on_submit():
-        db = get_db()
-        user_id = session.get('user_id')
-        user = db.execute('SELECT * FROM user WHERE id = ?', (user_id,)).fetchone()
-        
-        if not user:
-            raise NotFound("User not found.")
-        
-        updates = {}
+        updates = {
+            'username': form.username.data,
+            'email': form.email.data,
+            'bio': form.bio.data,
+            'instagram_id': form.instagram_id.data,
+            'youtube_id': form.youtube_id.data
+        }
         
         if form.profile_photo.data:
             try:
@@ -106,15 +125,13 @@ def edit():
             except Exception as e:
                 flash(f"An error occurred while uploading cover photo: {str(e)}", "error")
         
-        if updates:
-            update_query = 'UPDATE user SET ' + ', '.join(f'{key} = ?' for key in updates.keys()) + ' WHERE id = ?'
-            db.execute(update_query, (*updates.values(), user_id))
-            db.commit()
-            flash("Profile updated successfully! It may take a while to show up.", "success")
-        elif not form.profile_photo.data and not form.cover_photo.data:
-            flash("No photos were selected for upload.", "warning")
+        update_query = 'UPDATE user SET ' + ', '.join(f'{key} = ?' for key in updates.keys()) + ' WHERE id = ?'
+        db.execute(update_query, (*updates.values(), user_id))
+        db.commit()
+        flash("Profile updated successfully! It may take a while for changes to show up.", "success")
+        return redirect(url_for('profile.edit'))  # Redirect after successful update
     
-    elif form.errors:
+    if form.errors:
         for field, errors in form.errors.items():
             for error in errors:
                 flash(f"{field.capitalize()}: {error}", "error")
