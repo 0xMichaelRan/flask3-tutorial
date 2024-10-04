@@ -4,8 +4,13 @@ DROP TABLE IF EXISTS bid;
 
 CREATE TABLE user (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL,
-    email TEXT NOT NULL,
+    username TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    bio TEXT,
+    instagram_id TEXT,
+    youtube_id TEXT,
+    profile_photo_url TEXT,
+    cover_photo_url TEXT,
     password TEXT NOT NULL
 );
 
