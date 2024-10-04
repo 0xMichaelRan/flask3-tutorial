@@ -14,6 +14,23 @@ CREATE TABLE user (
     password VARCHAR(255) NOT NULL
 );
 
+ALTER TABLE user
+ADD COLUMN notification_bid_activity BOOLEAN DEFAULT FALSE,
+ADD COLUMN notification_item_sold BOOLEAN DEFAULT FALSE,
+ADD COLUMN notification_added_to_collection BOOLEAN DEFAULT FALSE,
+ADD COLUMN notification_review BOOLEAN DEFAULT FALSE;
+
+CREATE TABLE profile_update_history (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    timestamp DATETIME(6) NOT NULL,
+    user_id INT NOT NULL,
+    field_name VARCHAR(255) NOT NULL,
+    old_value TEXT,
+    new_value TEXT,
+    INDEX idx_timestamp (timestamp),
+    INDEX idx_user_id (user_id)
+) ENGINE=InnoDB;
+
 CREATE TABLE artwork (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -41,20 +58,3 @@ CREATE TABLE bid (
     FOREIGN KEY (bidder_id) REFERENCES user(id),
     FOREIGN KEY (artwork_id) REFERENCES artwork(id)
 );
-
-ALTER TABLE user
-ADD COLUMN notification_bid_activity BOOLEAN DEFAULT FALSE,
-ADD COLUMN notification_item_sold BOOLEAN DEFAULT FALSE,
-ADD COLUMN notification_added_to_collection BOOLEAN DEFAULT FALSE,
-ADD COLUMN notification_review BOOLEAN DEFAULT FALSE;
-
-CREATE TABLE profile_update_history (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    timestamp DATETIME(6) NOT NULL,
-    user_id INT NOT NULL,
-    field_name VARCHAR(255) NOT NULL,
-    old_value TEXT,
-    new_value TEXT,
-    INDEX idx_timestamp (timestamp),
-    INDEX idx_user_id (user_id)
-) ENGINE=InnoDB;
