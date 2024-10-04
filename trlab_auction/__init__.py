@@ -44,6 +44,10 @@ def create_app(test_config=None):
     def hello():
         return "This is the landing page of trlab_auction."
 
+    @app.route("/item")
+    def item():
+        return render_template("item.html")
+
     @app.route("/home")
     def home():
         return render_template("home.html")

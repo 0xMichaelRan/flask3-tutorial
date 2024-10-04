@@ -56,7 +56,8 @@
             <ul class="top_menu" style="display: flex;">
 
                 {% if g.user %}
-                <li><a href="{{ url_for('profile.edit') }}" class="btn_access_inverted">{{ g.user['username']|capitalize }}</a>
+                <li><a href="{{ url_for('profile.edit') }}" class="btn_access_inverted">{{ g.user['username']|capitalize
+                        }}</a>
                 </li>
                 <li><a href="{{ url_for('auth.logout') }}" class="btn_access">Logout</a></li>
                 {% else %}
@@ -106,7 +107,6 @@
                             <li><a href="grid-listing-1.html">Grid Listing Default</a></li>
                             <li><a href="grid-listing-2.html">Grid Listing Isotope Sort</a></li>
                             <li><a href="grid-listing-3.html">Grid Listing Filters Left</a></li>
-                            <li><a href="detail-page.html">Detail page 1</a></li>
                             <li><a href="detail-page-2.html">Detail page 2</a></li>
                             <li><a href="author.html">Author page</a></li>
                         </ul>
@@ -124,9 +124,6 @@
                                 </ul>
                             </li>
                             <li><a href="become-author.html">Become an Author</a></li>
-                            <li><a href="author-edit-profile.html">Edit profile</a></li>
-                            <li><a href="upload-artwork.html">Upload Artwork</a></li>
-                            <li><a href="account-settings.html">Account Settings</a></li>
                             <li><a href="blog.html">Blog</a></li>
                             <li><a href="blog-no-sidebar.html">Blog no sidebar</a></li>
                             <li><a href="contacts.html">Contacts</a></li>
@@ -267,6 +264,8 @@
     <script src="{{ url_for('static', filename='js/common_scripts.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/common_func.js') }}"></script>
+
+    {% block specificjs %}{% endblock %}
 </body>
 
 </html>
