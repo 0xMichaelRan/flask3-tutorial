@@ -1,7 +1,5 @@
 DROP TABLE IF EXISTS bid;
-
 DROP TABLE IF EXISTS artwork;
-
 DROP TABLE IF EXISTS user;
 
 CREATE TABLE user (
@@ -34,3 +32,9 @@ CREATE TABLE bid (
     FOREIGN KEY (bidder_id) REFERENCES user(id),
     FOREIGN KEY (artwork_id) REFERENCES artwork(id)
 );
+
+ALTER TABLE user
+ADD COLUMN notification_bid_activity BOOLEAN DEFAULT FALSE,
+ADD COLUMN notification_item_sold BOOLEAN DEFAULT FALSE,
+ADD COLUMN notification_added_to_collection BOOLEAN DEFAULT FALSE,
+ADD COLUMN notification_review BOOLEAN DEFAULT FALSE;

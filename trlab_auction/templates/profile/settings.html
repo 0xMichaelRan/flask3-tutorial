@@ -55,67 +55,77 @@ Account Settings
                     <h2>Account Settings</h2>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Change Password</label>
-                            <input type="text" class="form-control" placeholder="e.g. Abstract modern art">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('profile.settings') }}">
+                    {{ form.csrf_token }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.new_password.label }}
+                                {{ form.new_password(class="form-control", placeholder="Enter new password") }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Repeat Password</label>
-                            <input type="text" class="form-control" placeholder="e.g. Abstract modern art">
-                        </div>
-                    </div>
-                </div>
-                <!-- /row -->
-                <hr class="mt-3 mb-5">
-                <h6>Notifications</h6>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group switch_wrapper">
-                            <label>Bid Activity</label>
-                            <p class="mb-0">Ea quo utroque forensibus eloquentiam</p>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch" checked="checked">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.confirm_password.label }}
+                                {{ form.confirm_password(class="form-control", placeholder="Confirm new password") }}
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group switch_wrapper">
-                            <label>Item Sold</label>
-                            <p class="mb-0">Ea quo utroque forensibus eloquentiam</p>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch">
+                    <hr class="mt-3 mb-5">
+                    <h6>Notifications</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group switch_wrapper">
+                                {{ form.bid_activity.label }}
+                                <p class="mb-0">Receive notifications about bid activity</p>
+                                <div class="form-check form-switch">
+                                    {{ form.bid_activity(class="form-check-input") }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group switch_wrapper">
+                                {{ form.item_sold.label }}
+                                <p class="mb-0">Receive notifications when your item is sold</p>
+                                <div class="form-check form-switch">
+                                    {{ form.item_sold(class="form-check-input") }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group switch_wrapper">
+                                {{ form.added_to_collection.label }}
+                                <p class="mb-0">Receive notifications when your item is added to a collection</p>
+                                <div class="form-check form-switch">
+                                    {{ form.added_to_collection(class="form-check-input") }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group switch_wrapper">
+                                {{ form.review.label }}
+                                <p class="mb-0">Receive notifications about new reviews</p>
+                                <div class="form-check form-switch">
+                                    {{ form.review(class="form-check-input") }}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group switch_wrapper">
-                            <label>Added to a collection</label>
-                            <p class="mb-0">Ea quo utroque forensibus eloquentiam</p>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group switch_wrapper">
-                            <label>Review</label>
-                            <p class="mb-0">Ea quo utroque forensibus eloquentiam</p>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" role="switch">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /row -->
-
-
-
-                <p class="text-end mt-4"><a href="#0" class="btn_1">Save changes</a></p>
-
+                    <p class="text-end mt-4">
+                        <button type="submit" class="btn_1">Save changes</button>
+                    </p>
+                </form>
             </div>
         </div>
         <!-- /row -->

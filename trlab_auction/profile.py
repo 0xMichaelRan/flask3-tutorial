@@ -4,6 +4,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileSize
 from werkzeug.utils import secure_filename
 from werkzeug.exceptions import NotFound
+from werkzeug.security import generate_password_hash
 import boto3
 import os
 import uuid
@@ -12,8 +13,8 @@ from botocore.exceptions import ClientError
 
 from trlab_auction.database import get_db
 from trlab_auction.auth import login_required
-from wtforms import StringField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email
+from wtforms import StringField, TextAreaField, PasswordField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 bp = flask.Blueprint("profile", __name__, url_prefix="/profile")
 
@@ -62,6 +63,15 @@ class ProfileForm(FlaskForm):
             ),
         ],
     )
+
+
+class SettingsForm(FlaskForm):
+    new_password = PasswordField('New Password', validators=[Length(min=6)])
+    confirm_password = PasswordField('Confirm Password', validators=[EqualTo('new_password')])
+    bid_activity = BooleanField('Bid Activity')
+    item_sold = BooleanField('Item Sold')
+    added_to_collection = BooleanField('Added to a collection')
+    review = BooleanField('Review')
 
 
 def upload_file_to_s3(file, bucket_name, folder):
@@ -216,8 +226,45 @@ def edit():
 
 # Account Settings Route
 @bp.route("/settings", methods=("GET", "POST"))
+@login_required
 def settings():
-    return flask.render_template("profile/settings.html")
+    form = SettingsForm()
+    if form.validate_on_submit():
+        db = get_db()
+        user_id = session.get("user_id")
+        updates = {}
+        
+        if form.new_password.data:
+            updates["password"] = generate_password_hash(form.new_password.data)
+        
+        updates["notification_bid_activity"] = form.bid_activity.data
+        updates["notification_item_sold"] = form.item_sold.data
+        updates["notification_added_to_collection"] = form.added_to_collection.data
+        updates["notification_review"] = form.review.data
+
+        if updates:
+            update_query = (
+                "UPDATE user SET "
+                + ", ".join(f"{key} = %s" for key in updates.keys())
+                + " WHERE id = %s"
+            )
+            with db.cursor() as cursor:
+                cursor.execute(update_query, (*updates.values(), user_id))
+            db.commit()
+            flash("Settings updated successfully!", "success")
+        else:
+            flash("No changes were made.", "info")
+
+        return redirect(url_for("profile.settings"))
+
+    # Pre-fill the form with user data
+    user = g.user
+    form.bid_activity.data = user.get("notification_bid_activity", False)
+    form.item_sold.data = user.get("notification_item_sold", False)
+    form.added_to_collection.data = user.get("notification_added_to_collection", False)
+    form.review.data = user.get("notification_review", False)
+
+    return render_template("profile/settings.html", form=form)
 
 
 # Upload Artwork Route
