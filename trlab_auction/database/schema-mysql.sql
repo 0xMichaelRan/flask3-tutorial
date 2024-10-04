@@ -38,3 +38,14 @@ ADD COLUMN notification_bid_activity BOOLEAN DEFAULT FALSE,
 ADD COLUMN notification_item_sold BOOLEAN DEFAULT FALSE,
 ADD COLUMN notification_added_to_collection BOOLEAN DEFAULT FALSE,
 ADD COLUMN notification_review BOOLEAN DEFAULT FALSE;
+
+CREATE TABLE profile_update_history (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    timestamp DATETIME(6) NOT NULL,
+    user_id INT NOT NULL,
+    field_name VARCHAR(255) NOT NULL,
+    old_value TEXT,
+    new_value TEXT,
+    INDEX idx_timestamp (timestamp),
+    INDEX idx_user_id (user_id)
+) ENGINE=InnoDB;
