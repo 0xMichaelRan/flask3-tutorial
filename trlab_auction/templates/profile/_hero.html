@@ -1,0 +1,11 @@
+<div class="hero_single inner_pages author_page jarallax" data-jarallax>
+    {% if g.user and g.user.cover_photo_url %}
+    <img class="jarallax-img" src="{{ g.user.cover_photo_url }}" alt="User Cover Photo">
+    {% else %}
+    <img class="jarallax-img" src="{{ url_for('static', filename='img/hero_general.jpg') }}" alt="Default Cover Photo">
+    {% endif %}
+    <div class="opacity-mask" data-opacity-mask="rgba(0, 0, 0, 0.4)">
+    </div>
+    <div class="wave hero"></div>
+</div>
+<!-- /hero_single -->
