@@ -10,6 +10,7 @@ import os
 import uuid
 import re
 from botocore.exceptions import ClientError
+from flask import current_app
 
 from trlab_auction.database import get_db
 from trlab_auction.auth import login_required
@@ -66,12 +67,14 @@ class ProfileForm(FlaskForm):
 
 
 class SettingsForm(FlaskForm):
-    new_password = PasswordField('New Password', validators=[Length(min=6)])
-    confirm_password = PasswordField('Confirm Password', validators=[EqualTo('new_password')])
-    bid_activity = BooleanField('Bid Activity')
-    item_sold = BooleanField('Item Sold')
-    added_to_collection = BooleanField('Added to a collection')
-    review = BooleanField('Review')
+    new_password = PasswordField("New Password", validators=[Length(min=6)])
+    confirm_password = PasswordField(
+        "Confirm Password", validators=[EqualTo("new_password")]
+    )
+    bid_activity = BooleanField("Bid Activity")
+    item_sold = BooleanField("Item Sold")
+    added_to_collection = BooleanField("Added to a collection")
+    review = BooleanField("Review")
 
 
 def upload_file_to_s3(file, bucket_name, folder):
@@ -229,19 +232,26 @@ def edit():
 @login_required
 def settings():
     form = SettingsForm()
-    if form.validate_on_submit():
-        db = get_db()
-        user_id = session.get("user_id")
-        updates = {}
-        
-        if form.new_password.data:
-            updates["password"] = generate_password_hash(form.new_password.data)
-        
-        updates["notification_bid_activity"] = form.bid_activity.data
-        updates["notification_item_sold"] = form.item_sold.data
-        updates["notification_added_to_collection"] = form.added_to_collection.data
-        updates["notification_review"] = form.review.data
+    db = get_db()
+    user_id = session.get("user_id")
 
+    if request.method == "POST":
+        # Handle form submission
+        updates = {}
+
+        # Handle password change
+        if (
+            form.new_password.data
+            and form.new_password.data == form.confirm_password.data
+        ):
+            updates["password"] = generate_password_hash(form.new_password.data)
+
+        # Handle checkbox fields
+        checkbox_fields = ["bid_activity", "item_sold", "added_to_collection", "review"]
+        for field in checkbox_fields:
+            updates[f"notification_{field}"] = field in request.form
+
+        # Update database if there are changes
         if updates:
             update_query = (
                 "UPDATE user SET "
@@ -257,12 +267,18 @@ def settings():
 
         return redirect(url_for("profile.settings"))
 
-    # Pre-fill the form with user data
-    user = g.user
-    form.bid_activity.data = user.get("notification_bid_activity", False)
-    form.item_sold.data = user.get("notification_item_sold", False)
-    form.added_to_collection.data = user.get("notification_added_to_collection", False)
-    form.review.data = user.get("notification_review", False)
+    # GET request: Pre-fill the form with user data
+    with db.cursor() as cursor:
+        cursor.execute("SELECT * FROM user WHERE id = %s", (user_id,))
+        user = cursor.fetchone()
+
+    if user:
+        form.bid_activity.data = bool(user.get("notification_bid_activity"))
+        form.item_sold.data = bool(user.get("notification_item_sold"))
+        form.added_to_collection.data = bool(
+            user.get("notification_added_to_collection")
+        )
+        form.review.data = bool(user.get("notification_review"))
 
     return render_template("profile/settings.html", form=form)
 
