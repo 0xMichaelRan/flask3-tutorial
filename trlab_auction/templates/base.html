@@ -55,21 +55,56 @@
             </div>
             <ul class="top_menu" style="display: flex;">
 
-                {% if g.user %}
-                <li><a href="{{ url_for('profile.edit') }}" class="btn_access_inverted">{{ g.user['username']|capitalize
-                        }}</a>
-                </li>
-                <li><a href="{{ url_for('auth.logout') }}" class="btn_access">Logout</a></li>
-                {% else %}
-                <li><a href="{{ url_for('auth.login') }}" class="btn_access">Log In</a></li>
-                {% endif %}
-
                 <li>
                     <span class="color_mode_bt">
                         <input id="theme_toggle" type="checkbox" name="theme_toggle" />
                         <label for="theme_toggle"></label>
                     </span>
                 </li>
+
+                {% if g.user %}
+                <li>
+                    <div class="dropdown user clearfix">
+                        <a href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <figure><img src="{{ url_for('static', filename='img/avatar1.jpg') }}" alt=""></figure>
+                            <div class="balance">
+                                <h6 class="mb-0">@{{ g.user['username']|capitalize}}</h6>
+                                <span>4.689 ETH</span>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end animate fadeIn">
+                            <div class="dropdown-menu-content">
+                                <figure><img src="{{ url_for('static', filename='img/cover_small.jpg') }}" alt=""
+                                        width="300" height="138"></figure>
+                                <h4>@{{ g.user['username']|capitalize}}</h4>
+                                <p class="author_number">Ox465d53...9df5 <a href="#0"><i
+                                            class="bi bi-clipboard"></i></a></p>
+                                <div class="balance">
+                                    <h4>Balance</h4>
+                                    <span>4.689 ETH</span>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <a href="{{ url_for('profile.edit') }}">
+                                            <i class="bi bi-person"></i>My
+                                            profile</a>
+                                    </li>
+                                    <li><a href="{{ url_for('profile.settings') }}"><i
+                                                class="bi bi-gear"></i>Account</a></li>
+                                    <li><a href="detail-page.html"><i class="bi bi-image"></i>My items</a></li>
+                                    <li><a href="{{ url_for('auth.logout') }}"><i
+                                                class="bi bi-box-arrow-right"></i>Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /dropdown -->
+                </li>
+
+                {% else %}
+                <li><a href="{{ url_for('auth.login') }}" class="btn_access">Log In</a></li>
+                {% endif %}
+
             </ul>
             <!-- /top_menu -->
             <a href="#0" class="open_close">
