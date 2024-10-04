@@ -1,7 +1,7 @@
 import flask
 from flask import flash, render_template, session, g, request, redirect, url_for
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed, FileSize
+from flask_wtf.file import FileField, FileAllowed, FileSize, FileRequired
 from werkzeug.utils import secure_filename
 from werkzeug.exceptions import NotFound
 from werkzeug.security import generate_password_hash
@@ -16,8 +16,15 @@ import json
 
 from trlab_auction.database import get_db
 from trlab_auction.auth import login_required
-from wtforms import StringField, TextAreaField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms import (
+    StringField,
+    TextAreaField,
+    PasswordField,
+    BooleanField,
+    DecimalField,
+    SelectField,
+)
+from wtforms.validators import DataRequired, Length, Email, EqualTo, NumberRange
 
 bp = flask.Blueprint("profile", __name__, url_prefix="/profile")
 
@@ -77,6 +84,34 @@ class SettingsForm(FlaskForm):
     item_sold = BooleanField("Item Sold")
     added_to_collection = BooleanField("Added to a collection")
     review = BooleanField("Review")
+
+
+class ArtworkUploadForm(FlaskForm):
+    file = FileField(
+        "Upload file",
+        validators=[
+            FileRequired(),
+            FileAllowed(
+                ["png", "jpg", "jpeg", "gif", "mp4", "mp3"],
+                "Images, MP4 videos, and MP3 audio only!",
+            ),
+        ],
+    )
+    title = StringField("Item title", validators=[DataRequired(), Length(max=255)])
+    price = DecimalField("Price", validators=[DataRequired(), NumberRange(min=0)])
+    description = TextAreaField("Description", validators=[DataRequired()])
+    royalties = DecimalField("Royalties", validators=[NumberRange(min=0, max=15)])
+    size = StringField("Size", validators=[Length(max=50)])
+    genre = SelectField(
+        "Genre",
+        choices=[
+            ("Digital Art", "Digital Art"),
+            ("Pop Art", "Pop Art"),
+            ("Photography", "Photography"),
+        ],
+    )
+    on_sale = BooleanField("Put on sale")
+    unlock_on_purchase = BooleanField("Unlock one purchase")
 
 
 def upload_file_to_s3(file, bucket_name, folder):
@@ -347,5 +382,57 @@ def settings():
 
 # Upload Artwork Route
 @bp.route("/upload", methods=("GET", "POST"))
+@login_required
 def upload():
-    return flask.render_template("profile/upload.html")
+    form = ArtworkUploadForm()
+    if form.validate_on_submit():
+        # Process the form data
+        file = form.file.data
+        filename = secure_filename(file.filename)
+        file_url = upload_file_to_s3(
+            file, BUCKET_NAME, "artworks"
+        )  # Implement this function
+
+        db = get_db()
+        try:
+            with db.cursor() as cursor:
+                cursor.execute(
+                    """
+                    INSERT INTO artwork (user_id, title, description, price, royalties, size, genre, file_url, file_type, on_sale, unlock_on_purchase)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """,
+                    (
+                        g.user["id"],
+                        form.title.data,
+                        form.description.data,
+                        form.price.data,
+                        form.royalties.data,
+                        form.size.data,
+                        form.genre.data,
+                        file_url,
+                        get_file_type(filename),
+                        form.on_sale.data,
+                        form.unlock_on_purchase.data,
+                    ),
+                )
+            db.commit()
+            flash("Artwork uploaded successfully!", "success")
+            return redirect(url_for("profile.upload"))
+        except Exception as e:
+            db.rollback()
+            current_app.logger.error(f"Database error: {str(e)}")
+            flash("An error occurred while uploading. Please try again.", "error")
+
+    return render_template("profile/upload.html", form=form)
+
+
+def get_file_type(filename):
+    extension = filename.rsplit(".", 1)[1].lower()
+    if extension in ["png", "jpg", "jpeg", "gif"]:
+        return "image"
+    elif extension == "mp4":
+        return "video"
+    elif extension == "mp3":
+        return "audio"
+    else:
+        raise ValueError("Unsupported file type")
