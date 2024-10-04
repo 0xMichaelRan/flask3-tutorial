@@ -113,8 +113,7 @@ Edit Profile
                             <div class="form-group">
                                 {{ form.instagram_id.label }}
                                 {{ form.instagram_id(class="form-control", placeholder="@" + (g.user['instagram_id'] if
-                                g.user and 'instagram_id' in g.user.keys() and g.user['instagram_id'] else 'Instagram
-                                ID')) }}
+                                g.user and 'instagram_id' in g.user.keys() and g.user['instagram_id'] else 'Instagram ID')) }}
                                 {% for error in form.instagram_id.errors %}
                                 <small class="text-danger">{{ error }}</small>
                                 {% endfor %}
