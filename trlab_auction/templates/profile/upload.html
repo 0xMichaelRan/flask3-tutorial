@@ -11,7 +11,7 @@ Upload Artwork
 {% block main %}
 <main>
     {% include 'profile/_hero.html' %}
-    
+
     <div class="container margin_30_40">
         <div class="row">
             <div class="col-lg-3">
@@ -91,7 +91,9 @@ Upload Artwork
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Royalties</label>
-                            <input type="text" class="form-control" placeholder="e.g. Abstract modern art">
+                            <input type="range" class="form-range" id="royalties" name="royalties" min="0" max="15"
+                                value="0" step="0.1">
+                            <span id="royaltiesValue">0</span>%
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -102,10 +104,10 @@ Upload Artwork
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label>Choose a collection</label>
+                            <label>Genre</label>
                             <div class="custom_select">
                                 <select class="wide">
-                                    <option>Abstract</option>
+                                    <option>Digital Art</option>
                                     <option>Pop Art</option>
                                     <option>Photography</option>
                                 </select>
@@ -121,7 +123,7 @@ Upload Artwork
                     <div class="col-md-6">
                         <div class="form-group switch_wrapper">
                             <label>Put on sale</label>
-                            <p class="mb-0">Ea quo utroque forensibus eloquentiam</p>
+                            <p class="mb-0">Immediately available for auction.</p>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch" checked="checked">
                             </div>
@@ -130,7 +132,7 @@ Upload Artwork
                     <div class="col-md-6">
                         <div class="form-group switch_wrapper">
                             <label>Unlock one purchase</label>
-                            <p class="mb-0">Ea quo utroque forensibus eloquentiam</p>
+                            <p class="mb-0">Buy now with listed price.</p>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" role="switch">
                             </div>
@@ -185,6 +187,18 @@ Upload Artwork
                 }
             }
         });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const royaltiesInput = document.getElementById('royalties');
+        const royaltiesValue = document.getElementById('royaltiesValue');
+
+        function updateRoyaltiesValue() {
+            royaltiesValue.textContent = royaltiesInput.value;
+        }
+
+        royaltiesInput.addEventListener('input', updateRoyaltiesValue);
+        updateRoyaltiesValue(); // Set initial value
     });
 </script>
 {% endblock %}

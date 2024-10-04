@@ -16,11 +16,20 @@ CREATE TABLE user (
 
 CREATE TABLE artwork (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    artist_id INT NOT NULL,
-    created_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    artwork_title VARCHAR(255) NOT NULL,
-    artwork_body TEXT NOT NULL,
-    FOREIGN KEY (artist_id) REFERENCES user(id)
+    user_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2),
+    royalties DECIMAL(4, 1),
+    size VARCHAR(50),
+    genre VARCHAR(50),
+    file_url VARCHAR(255) NOT NULL,
+    file_type ENUM('image', 'video', 'audio') NOT NULL,
+    on_sale BOOLEAN DEFAULT FALSE,
+    unlock_on_purchase BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
 
 CREATE TABLE bid (
