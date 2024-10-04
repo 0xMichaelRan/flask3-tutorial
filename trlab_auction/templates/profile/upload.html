@@ -59,17 +59,22 @@ Upload Artwork
                         <div class="form-group">
                             <label>Upload file</label>
                             <div class="file_upload">
-                                <input type="file">
+                                <input type="file" id="artwork-upload" accept="image/*,video/mp4,audio/mp3">
                                 <i class="bi bi-file-earmark-arrow-up"></i>
-                                <div>PNG, GIF, JPG, WEBP, MP4 or MP3. Max 1Gb</div>
+                                <div>PNG, GIF, JPG, WEBP, MP4 or MP3. Max 50MB</div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Preview</label>
-                            <figure><img src="{{ url_for('static', filename='img/items/item-3.jpg') }}" alt=""
-                                    width="533" height="400" class="img-fluid rounded"></figure>
+                            <figure id="preview-container">
+                                <img id="preview-image" src="{{ url_for('static', filename='img/items/item-3.jpg') }}"
+                                    alt="" width="533" height="400" class="img-fluid rounded">
+                                <video id="preview-video" class="img-fluid rounded" controls
+                                    style="display: none;"></video>
+                                <audio id="preview-audio" controls style="display: none; width: 100%;"></audio>
+                            </figure>
                         </div>
                     </div>
                 </div>
@@ -154,4 +159,43 @@ Upload Artwork
     <!-- /container -->
 </main>
 <!-- /main -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fileInput = document.getElementById('artwork-upload');
+        const previewImage = document.getElementById('preview-image');
+        const previewVideo = document.getElementById('preview-video');
+        const previewAudio = document.getElementById('preview-audio');
+
+        fileInput.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const fileType = file.type.split('/')[0]; // 'image', 'video', or 'audio'
+                const fileURL = URL.createObjectURL(file);
+
+                // Hide all preview elements
+                previewImage.style.display = 'none';
+                previewVideo.style.display = 'none';
+                previewAudio.style.display = 'none';
+
+                switch (fileType) {
+                    case 'image':
+                        previewImage.src = fileURL;
+                        previewImage.style.display = 'block';
+                        break;
+                    case 'video':
+                        previewVideo.src = fileURL;
+                        previewVideo.style.display = 'block';
+                        break;
+                    case 'audio':
+                        previewAudio.src = fileURL;
+                        previewAudio.style.display = 'block';
+                        break;
+                    default:
+                        console.log('Unsupported file type');
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}
