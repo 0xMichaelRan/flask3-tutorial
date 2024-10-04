@@ -156,7 +156,6 @@ def edit():
                 )
                 if profile_photo_url:
                     updates["profile_photo_url"] = profile_photo_url
-                    flash("Profile photo will be updated.", "info")
                 else:
                     flash(
                         "Failed to upload the profile photo. Please try again.", "error"
@@ -178,7 +177,6 @@ def edit():
                 )
                 if cover_photo_url:
                     updates["cover_photo_url"] = cover_photo_url
-                    flash("Cover photo will be updated.", "info")
                 else:
                     flash(
                         "Failed to upload the cover photo. Please try again.", "error"
@@ -213,16 +211,16 @@ def edit():
     for field in ["username", "email", "bio", "instagram_id", "youtube_id"]:
         getattr(form, field).data = user[field]
 
-    return render_template("profile/edit-profile.html", form=form, user=user)
+    return render_template("profile/edit.html", form=form, user=user)
 
 
 # Account Settings Route
 @bp.route("/settings", methods=("GET", "POST"))
 def settings():
-    return flask.render_template("profile/account-settings.html")
+    return flask.render_template("profile/settings.html")
 
 
 # Upload Artwork Route
 @bp.route("/upload", methods=("GET", "POST"))
 def upload():
-    return flask.render_template("profile/upload-artwork.html")
+    return flask.render_template("profile/upload.html")

@@ -102,7 +102,7 @@ Edit Profile
                         <div class="col-md-12">
                             <div class="form-group">
                                 {{ form.bio.label }}
-                                {{ form.bio(class="form-control", placeholder=g.user['bio'] if 'bio' in g.user.keys()
+                                {{ form.bio(class="form-control", rows="5", placeholder=g.user['bio'] if 'bio' in g.user.keys()
                                 else 'Your bio here...') }}
                                 {% for error in form.bio.errors %}
                                 <small class="text-danger">{{ error }}</small>
