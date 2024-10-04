@@ -98,51 +98,97 @@ def edit():
 
         # Username validation
         new_username = form.username.data.strip()
-        if new_username != user['username']:
-            if not re.match(r'^[\w]+$', new_username):
-                flash("Username must contain only letters, numbers, or underscore.", "dark")
+        if new_username != user["username"]:
+            if not re.match(r"^[\w]+$", new_username):
+                flash(
+                    "Username must contain only letters, numbers, or underscore.",
+                    "dark",
+                )
                 has_error = True
             elif len(new_username) < 3 or len(new_username) > 20:
                 flash("Username must be between 3 and 20 characters long.", "dark")
                 has_error = True
             else:
-                updates['username'] = new_username
+                updates["username"] = new_username
 
         # Email validation
         new_email = form.email.data.strip()
-        if new_email != user['email']:
-            if '@' not in new_email:
+        if new_email != user["email"]:
+            if "@" not in new_email:
                 flash("Invalid email address.", "dark")
                 has_error = True
             else:
-                updates['email'] = new_email
+                updates["email"] = new_email
 
         # Bio validation
         new_bio = form.bio.data.strip()
-        if new_bio != user['bio']:
+        if new_bio != user["bio"]:
             if len(new_bio) > 500:
                 flash("Bio must be 500 characters or less.", "dark")
                 has_error = True
             else:
-                updates['bio'] = new_bio
+                updates["bio"] = new_bio
 
         # Instagram ID validation
-        new_instagram = form.instagram_id.data.lstrip('@').strip()
-        if new_instagram != user['instagram_id']:
+        new_instagram = form.instagram_id.data.lstrip("@").strip()
+        if new_instagram != user["instagram_id"]:
             if len(new_instagram) > 30:
                 flash("Instagram ID must be 30 characters or less.", "dark")
                 has_error = True
             else:
-                updates['instagram_id'] = new_instagram
+                updates["instagram_id"] = new_instagram
 
         # YouTube ID validation
-        new_youtube = form.youtube_id.data.lstrip('@').strip()
-        if new_youtube != user['youtube_id']:
+        new_youtube = form.youtube_id.data.lstrip("@").strip()
+        if new_youtube != user["youtube_id"]:
             if len(new_youtube) > 30:
                 flash("YouTube ID must be 30 characters or less.", "dark")
                 has_error = True
             else:
-                updates['youtube_id'] = new_youtube
+                updates["youtube_id"] = new_youtube
+
+        # Handle profile photo upload
+        if form.profile_photo.data:
+            try:
+                file = form.profile_photo.data
+                profile_photo_url = upload_file_to_s3(
+                    file, BUCKET_NAME, PROFILE_PHOTO_FOLDER
+                )
+                if profile_photo_url:
+                    updates["profile_photo_url"] = profile_photo_url
+                    flash("Profile photo will be updated.", "info")
+                else:
+                    flash(
+                        "Failed to upload the profile photo. Please try again.", "error"
+                    )
+                    has_error = True
+            except Exception as e:
+                flash(
+                    f"An error occurred while uploading profile photo: {str(e)}",
+                    "error",
+                )
+                has_error = True
+
+        # Handle cover photo upload
+        if form.cover_photo.data:
+            try:
+                file = form.cover_photo.data
+                cover_photo_url = upload_file_to_s3(
+                    file, BUCKET_NAME, PROFILE_COVER_FOLDER
+                )
+                if cover_photo_url:
+                    updates["cover_photo_url"] = cover_photo_url
+                    flash("Cover photo will be updated.", "info")
+                else:
+                    flash(
+                        "Failed to upload the cover photo. Please try again.", "error"
+                    )
+                    has_error = True
+            except Exception as e:
+                flash(
+                    f"An error occurred while uploading cover photo: {str(e)}", "error"
+                )
+                has_error = True
 
         if not has_error and updates:
             update_query = (
@@ -154,7 +200,7 @@ def edit():
                 cursor.execute(update_query, (*updates.values(), user["id"]))
             db.commit()
             flash("Profile updated successfully!", "success")
-            
+
             # Refresh user data after update
             with db.cursor() as cursor:
                 cursor.execute("SELECT * FROM user WHERE id = %s", (user["id"],))
@@ -164,7 +210,7 @@ def edit():
             flash("No changes were made to your profile.", "info")
 
     # Pre-fill the form with user data
-    for field in ['username', 'email', 'bio', 'instagram_id', 'youtube_id']:
+    for field in ["username", "email", "bio", "instagram_id", "youtube_id"]:
         getattr(form, field).data = user[field]
 
     return render_template("profile/edit-profile.html", form=form, user=user)
