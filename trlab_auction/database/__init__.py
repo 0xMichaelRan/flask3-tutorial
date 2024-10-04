@@ -1,5 +1,4 @@
 import os
-import sqlite3
 import pymysql
 import click
 from flask import current_app, g
@@ -11,49 +10,57 @@ load_dotenv()
 
 def get_db():
     if "db" not in g:
-        db_type = os.getenv("DB_TYPE", "sqlite").lower()
-
-        if db_type == "sqlite":
-            g.db = sqlite3.connect(
-                current_app.config["DATABASE"], detect_types=sqlite3.PARSE_DECLTYPES
-            )
-            g.db.row_factory = sqlite3.Row
-        elif db_type == "mysql":
-            g.db = pymysql.connect(
-                host=os.getenv("MYSQL_HOST"),
-                user=os.getenv("MYSQL_USER"),
-                password=os.getenv("MYSQL_PASSWORD"),
-                database=os.getenv("MYSQL_DATABASE"),
-                cursorclass=pymysql.cursors.DictCursor,
-            )
-        else:
-            raise ValueError(f"Unsupported database type: {db_type}")
-
+        g.db = pymysql.connect(
+            host=os.getenv("MYSQL_HOST"),
+            user=os.getenv("MYSQL_USER"),
+            password=os.getenv("MYSQL_PASSWORD"),
+            database=os.getenv("MYSQL_DATABASE"),
+            cursorclass=pymysql.cursors.DictCursor,
+        )
     return g.db
 
 
 def close_db(e=None):
     db = g.pop("db", None)
-
     if db is not None:
-        if isinstance(db, sqlite3.Connection):
-            db.close()
-        elif isinstance(db, pymysql.Connection):
-            db.close()
+        db.close()
 
 
 def init_db():
-    db = get_db()
-    db_type = os.getenv("DB_TYPE", "sqlite").lower()
+    # Create database if it doesn't exist
+    conn = pymysql.connect(
+        host=os.getenv("MYSQL_HOST"),
+        user=os.getenv("MYSQL_USER"),
+        password=os.getenv("MYSQL_PASSWORD"),
+    )
+    try:
+        with conn.cursor() as cursor:
+            cursor.execute(
+                f"CREATE DATABASE IF NOT EXISTS {os.getenv('MYSQL_DATABASE')}"
+            )
+        conn.commit()
+    finally:
+        conn.close()
 
-    if db_type == "sqlite":
-        with current_app.open_resource("database/setup-db.sql") as f:
-            db.executescript(f.read().decode("utf8"))
-    elif db_type == "mysql":
-        with current_app.open_resource("schema_mysql.sql") as f:
+    # Now connect to the database and create tables
+    db = get_db()
+    try:
+        with current_app.open_resource("database/schema-mysql.sql") as f:
+            sql_script = f.read().decode("utf8")
+            statements = sql_script.split(";")
             with db.cursor() as cursor:
-                cursor.execute(f.read().decode("utf8"))
+                for statement in statements:
+                    if statement.strip():
+                        try:
+                            cursor.execute(statement)
+                        except pymysql.err.OperationalError as e:
+                            if e.args[0] != 1051:  # Ignore "Unknown table" warnings
+                                current_app.logger.warning(f"Error executing SQL: {e}")
+                                raise
         db.commit()
+    except Exception as e:
+        current_app.logger.error(f"Database initialization error: {e}")
+        raise
 
 
 @click.command("init-db")

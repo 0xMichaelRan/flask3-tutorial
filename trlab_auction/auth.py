@@ -32,17 +32,18 @@ def register():
             error = "Email is required."
         elif not password:
             error = "Password is required."
-        elif (
-            db.execute("SELECT id FROM user WHERE username = ?", (username,)).fetchone()
-            is not None
-        ):
-            error = f"User {username} is already registered."
+        else:
+            with db.cursor() as cursor:
+                cursor.execute("SELECT id FROM user WHERE username = %s", (username,))
+                if cursor.fetchone() is not None:
+                    error = f"User {username} is already registered."
 
         if error is None:
-            db.execute(
-                "INSERT INTO user (username, email, password) VALUES (?, ?, ?)",
-                (username, email, generate_password_hash(password)),
-            )
+            with db.cursor() as cursor:
+                cursor.execute(
+                    "INSERT INTO user (username, email, password) VALUES (%s, %s, %s)",
+                    (username, email, generate_password_hash(password)),
+                )
             db.commit()
             return redirect(url_for("auth.login"))
 
@@ -58,9 +59,9 @@ def login():
         password = request.form["password"]
         db = get_db()
         error = None
-        user = db.execute(
-            "SELECT * FROM user WHERE username = ?", (username,)
-        ).fetchone()
+        with db.cursor() as cursor:
+            cursor.execute("SELECT * FROM user WHERE username = %s", (username,))
+            user = cursor.fetchone()
 
         if user is None:
             error = "Incorrect username."
@@ -84,9 +85,9 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = (
-            get_db().execute("SELECT * FROM user WHERE id = ?", (user_id,)).fetchone()
-        )
+        with get_db().cursor() as cursor:
+            cursor.execute("SELECT * FROM user WHERE id = %s", (user_id,))
+            g.user = cursor.fetchone()
 
 
 @bp.route("/logout")
