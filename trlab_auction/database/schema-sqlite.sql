@@ -1,3 +1,5 @@
+-- This is deprecated since we are using MySQL now
+
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS artwork;
 DROP TABLE IF EXISTS bid;
