@@ -11,6 +11,8 @@ import uuid
 import re
 from botocore.exceptions import ClientError
 from flask import current_app
+from datetime import datetime
+import json
 
 from trlab_auction.database import get_db
 from trlab_auction.auth import login_required
@@ -100,127 +102,115 @@ def upload_file_to_s3(file, bucket_name, folder):
 
 
 @bp.route("/edit", methods=("GET", "POST"))
+@login_required
 def edit():
     form = ProfileForm()
-    user = g.user  # g.user is already a dictionary
+    user = g.user
     db = get_db()
 
-    if form.validate_on_submit():
-        updates = {}
-        has_error = False
+    if request.method == "POST":
+        if form.validate_on_submit():
+            updates = {}
+            has_error = False
+            history_updates = []
+            current_time = datetime.utcnow()
 
-        # Username validation
-        new_username = form.username.data.strip()
-        if new_username != user["username"]:
-            if not re.match(r"^[\w]+$", new_username):
-                flash(
-                    "Username must contain only letters, numbers, or underscore.",
-                    "dark",
-                )
-                has_error = True
-            elif len(new_username) < 3 or len(new_username) > 20:
-                flash("Username must be between 3 and 20 characters long.", "dark")
-                has_error = True
-            else:
-                updates["username"] = new_username
+            fields_to_update = [
+                ("username", 3, 20),
+                ("email", None, None),
+                ("bio", None, 500),
+                ("instagram_id", None, 30),
+                ("youtube_id", None, 30)
+            ]
 
-        # Email validation
-        new_email = form.email.data.strip()
-        if new_email != user["email"]:
-            if "@" not in new_email:
-                flash("Invalid email address.", "dark")
-                has_error = True
-            else:
-                updates["email"] = new_email
+            for field, min_length, max_length in fields_to_update:
+                new_value = getattr(form, field).data.strip()
+                if field in ['instagram_id', 'youtube_id']:
+                    new_value = new_value.lstrip('@')
 
-        # Bio validation
-        new_bio = form.bio.data.strip()
-        if new_bio != user["bio"]:
-            if len(new_bio) > 500:
-                flash("Bio must be 500 characters or less.", "dark")
-                has_error = True
-            else:
-                updates["bio"] = new_bio
+                if new_value != user[field]:
+                    if min_length and len(new_value) < min_length:
+                        flash(f"{field.capitalize()} must be at least {min_length} characters long.", "dark")
+                        has_error = True
+                    elif max_length and len(new_value) > max_length:
+                        flash(f"{field.capitalize()} must be {max_length} characters or less.", "dark")
+                        has_error = True
+                    elif field == "username" and not new_value.isalnum():
+                        flash("Username must contain only letters and numbers.", "dark")
+                        has_error = True
+                    elif field == "email" and "@" not in new_value:
+                        flash("Invalid email address.", "dark")
+                        has_error = True
+                    else:
+                        updates[field] = new_value
+                        history_updates.append((
+                            current_time,
+                            user["id"],
+                            field,
+                            json.dumps(user[field]),
+                            json.dumps(new_value)
+                        ))
 
-        # Instagram ID validation
-        new_instagram = form.instagram_id.data.lstrip("@").strip()
-        if new_instagram != user["instagram_id"]:
-            if len(new_instagram) > 30:
-                flash("Instagram ID must be 30 characters or less.", "dark")
-                has_error = True
-            else:
-                updates["instagram_id"] = new_instagram
+            # Handle photo uploads
+            for photo_field in ['profile_photo', 'cover_photo']:
+                if getattr(form, photo_field).data:
+                    try:
+                        file = getattr(form, photo_field).data
+                        folder = PROFILE_PHOTO_FOLDER if photo_field == 'profile_photo' else PROFILE_COVER_FOLDER
+                        photo_url = upload_file_to_s3(file, BUCKET_NAME, folder)
+                        if photo_url:
+                            updates[f"{photo_field}_url"] = photo_url
+                            history_updates.append((
+                                current_time,
+                                user["id"],
+                                f"{photo_field}_url",
+                                json.dumps(user.get(f"{photo_field}_url")),
+                                json.dumps(photo_url)
+                            ))
+                        else:
+                            flash(f"Failed to upload the {photo_field.replace('_', ' ')}. Please try again.", "error")
+                            has_error = True
+                    except Exception as e:
+                        flash(f"An error occurred while uploading {photo_field.replace('_', ' ')}: {str(e)}", "error")
+                        has_error = True
 
-        # YouTube ID validation
-        new_youtube = form.youtube_id.data.lstrip("@").strip()
-        if new_youtube != user["youtube_id"]:
-            if len(new_youtube) > 30:
-                flash("YouTube ID must be 30 characters or less.", "dark")
-                has_error = True
-            else:
-                updates["youtube_id"] = new_youtube
+            if not has_error and updates:
+                try:
+                    with db.cursor() as cursor:
+                        # Update user table
+                        update_query = (
+                            "UPDATE user SET "
+                            + ", ".join(f"{key} = %s" for key in updates.keys())
+                            + " WHERE id = %s"
+                        )
+                        cursor.execute(update_query, (*updates.values(), user["id"]))
 
-        # Handle profile photo upload
-        if form.profile_photo.data:
-            try:
-                file = form.profile_photo.data
-                profile_photo_url = upload_file_to_s3(
-                    file, BUCKET_NAME, PROFILE_PHOTO_FOLDER
-                )
-                if profile_photo_url:
-                    updates["profile_photo_url"] = profile_photo_url
-                else:
-                    flash(
-                        "Failed to upload the profile photo. Please try again.", "error"
-                    )
-                    has_error = True
-            except Exception as e:
-                flash(
-                    f"An error occurred while uploading profile photo: {str(e)}",
-                    "error",
-                )
-                has_error = True
+                        # Insert into profile_update_history
+                        history_insert_query = """
+                        INSERT INTO profile_update_history 
+                        (timestamp, user_id, field_name, old_value, new_value)
+                        VALUES (%s, %s, %s, %s, %s)
+                        """
+                        cursor.executemany(history_insert_query, history_updates)
 
-        # Handle cover photo upload
-        if form.cover_photo.data:
-            try:
-                file = form.cover_photo.data
-                cover_photo_url = upload_file_to_s3(
-                    file, BUCKET_NAME, PROFILE_COVER_FOLDER
-                )
-                if cover_photo_url:
-                    updates["cover_photo_url"] = cover_photo_url
-                else:
-                    flash(
-                        "Failed to upload the cover photo. Please try again.", "error"
-                    )
-                    has_error = True
-            except Exception as e:
-                flash(
-                    f"An error occurred while uploading cover photo: {str(e)}", "error"
-                )
-                has_error = True
+                    db.commit()
+                    flash("Profile updated successfully!", "success")
 
-        if not has_error and updates:
-            update_query = (
-                "UPDATE user SET "
-                + ", ".join(f"{key} = %s" for key in updates.keys())
-                + " WHERE id = %s"
-            )
-            with db.cursor() as cursor:
-                cursor.execute(update_query, (*updates.values(), user["id"]))
-            db.commit()
-            flash("Profile updated successfully!", "success")
+                    # Refresh user data after update
+                    with db.cursor() as cursor:
+                        cursor.execute("SELECT * FROM user WHERE id = %s", (user["id"],))
+                        g.user = cursor.fetchone()
+                    user = g.user
+                except Exception as e:
+                    db.rollback()
+                    current_app.logger.error(f"Database error: {str(e)}")
+                    flash("An error occurred while updating your profile. Please try again.", "error")
+            elif not updates:
+                flash("No changes were made to your profile.", "info")
 
-            # Refresh user data after update
-            with db.cursor() as cursor:
-                cursor.execute("SELECT * FROM user WHERE id = %s", (user["id"],))
-                g.user = cursor.fetchone()
-            user = g.user
-        elif not updates:
-            flash("No changes were made to your profile.", "info")
+        return redirect(url_for('profile.edit'))
 
-    # Pre-fill the form with user data
+    # GET request: Pre-fill the form with user data
     for field in ["username", "email", "bio", "instagram_id", "youtube_id"]:
         getattr(form, field).data = user[field]
 
