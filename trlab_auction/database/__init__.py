@@ -45,7 +45,7 @@ def init_db():
     # Now connect to the database and create tables
     db = get_db()
     try:
-        with current_app.open_resource("database/schema-mysql.sql") as f:
+        with current_app.open_resource("database/schema.sql") as f:
             sql_script = f.read().decode("utf8")
             statements = sql_script.split(";")
             with db.cursor() as cursor:
