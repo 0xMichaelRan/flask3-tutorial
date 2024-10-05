@@ -15,7 +15,7 @@ from datetime import datetime
 import json
 
 from trlab_auction.database import get_db
-from trlab_auction.auth import login_required
+from trlab_auction.src.auth import login_required
 from wtforms import (
     StringField,
     TextAreaField,
