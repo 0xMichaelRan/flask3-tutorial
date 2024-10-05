@@ -10,7 +10,7 @@ Edit Profile
 
 {% block main %}
 <main>
-    {% include 'profile/_hero.html' %}
+    {% include 'common/_hero.html' %}
 
     <div class="container margin_30_40">
         <div class="row">
@@ -91,7 +91,8 @@ Edit Profile
                         <div class="col-md-12">
                             <div class="form-group">
                                 {{ form.bio.label }}
-                                {{ form.bio(class="form-control", rows="5", placeholder=g.user['bio'] if 'bio' in g.user.keys()
+                                {{ form.bio(class="form-control", rows="5", placeholder=g.user['bio'] if 'bio' in
+                                g.user.keys()
                                 else 'Your bio here...') }}
                                 {% for error in form.bio.errors %}
                                 <small class="text-danger">{{ error }}</small>
@@ -102,7 +103,8 @@ Edit Profile
                             <div class="form-group">
                                 {{ form.instagram_id.label }}
                                 {{ form.instagram_id(class="form-control", placeholder="@" + (g.user['instagram_id'] if
-                                g.user and 'instagram_id' in g.user.keys() and g.user['instagram_id'] else 'Instagram ID')) }}
+                                g.user and 'instagram_id' in g.user.keys() and g.user['instagram_id'] else
+                                'instagram_id')) }}
                                 {% for error in form.instagram_id.errors %}
                                 <small class="text-danger">{{ error }}</small>
                                 {% endfor %}
@@ -112,7 +114,7 @@ Edit Profile
                             <div class="form-group">
                                 {{ form.youtube_id.label }}
                                 {{ form.youtube_id(class="form-control", placeholder="@" + (g.user['youtube_id'] if
-                                g.user and 'youtube_id' in g.user.keys() and g.user['youtube_id'] else 'Youtube ID')) }}
+                                g.user and 'youtube_id' in g.user.keys() and g.user['youtube_id'] else 'youtube_id')) }}
                                 {% for error in form.youtube_id.errors %}
                                 <small class="text-danger">{{ error }}</small>
                                 {% endfor %}
