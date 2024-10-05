@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Item
+{{ artwork['title'] }}
 {% endblock %}
 
 {% block specificcss %}
@@ -15,13 +15,14 @@ Item
 			<div class="col-xl-8 col-lg-7 margin_detail">
 
 				<div class="box_general">
-					<img src="{{ url_for('static', filename='img/detail_2.jpg') }}" alt="" class="img-fluid">
+					<img src="{{ artwork['file_url'] }}" alt="{{ artwork['title'] }}" class="img-fluid">
 					<div class="main_info_wrapper">
 						<div class="main_info">
 							<div class="clearfix mb-3">
 								<div class="item_desc">
 									<div class="mb-3">
-										<a href="author.html" class="author">
+										<a href="{{ url_for('profile.edit', username=artwork['artist_name']) }}"
+											class="author">
 											<div class="author_thumb veryfied"><i class="bi bi-check"></i>
 												<figure>
 													<img src="{{ url_for('static', filename='img/avatar1.jpg') }}"
@@ -30,7 +31,7 @@ Item
 														data-was-processed="true">
 												</figure>
 											</div>
-											<h6 class="ms-1"><span>Creator</span>@Monica_Claus</h6>
+											<h6 class="ms-1"><span>Creator</span>@{{ artwork['artist_name'] }}</h6>
 										</a>
 									</div>
 								</div>
@@ -38,15 +39,10 @@ Item
 									123 Likes <a href="#0" class="wish_bt"><i class="bi bi-heart"></i></a>
 								</div>
 							</div>
-							<h1 class="mb-md-2">Amazing Digital Art</h1>
-							<p>Tincidunt intellegam mel ne, an eam menandri invenire euripidis. Ea quo utroque
-								forensibus eloquentiam. Nam ad option iisque verterem, sed nemore menandri ex. Pri ei
-								solet eripuit, et nam decore tacimates persequeris. Te nec duis corpora persequeris, vix
-								ubique graece intellegat ea.</p>
+							<h1 class="mb-md-2">{{ artwork['title'] }}</h1>
+							<p>{{ artwork['description'] }}</p>
 							<div class="content_more">
-								<p>Lorem ipsum dolor sit amet, an sea eius elitr persius. Voluptaria inciderint qui in.
-									No tollit aliquid reformidans mei, nec illum sensibus id, at has esse admodum
-									adipisci. Et has maiestatis scriptorem. Et aeque iudico oblique ius.</p>
+								<p>{{ artwork['description'] }}</p>
 							</div>
 							<!-- /content_more -->
 							<a href="#0" class="show_hide" data-content="toggle-text">Read More</a>
@@ -249,7 +245,8 @@ Item
 					<h2>Bid Details</h2>
 					<a href="#0" class="close_panel_mobile"><i class="icon_close"></i></a>
 					<div class="item_meta">
-						<h3>Current Bid <strong>1.31 ETH</strong><span>$2,505.36</span></h3>
+						<h3>Current Bid <strong>{{ artwork['price'] }} ETH</strong><span>${{ artwork['price'] * 1915
+								}}</span></h3>
 						<p class="countdown_in">Auctions ends in<br><strong data-countdown="2022/03/15"></strong></p>
 					</div>
 					<hr>
@@ -273,6 +270,10 @@ Item
 </main>
 <!-- /main -->
 {% endblock %}
+
+
+{% include 'common/_modal.html' with context %}
+
 
 {% block specificjs %}
 <!-- SPECIFIC SCRIPTS -->
