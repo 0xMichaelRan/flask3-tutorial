@@ -60,12 +60,13 @@ Home
 		<div class="owl-carousel owl-theme featured_carousel" data-cue="slideInUp">
 			<div class="item">
 				<div class="strip">
+					<div data-countdown="2024/10/15 12:11:30" class="countdown"></div>
 					<figure>
 						<a href="#modal-dialog" class="btn_1 modal_popup">Place a bid</a>
 						<img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}"
 							data-src="{{ url_for('static', filename='img/items/item-1.jpg') }}" class="owl-lazy" alt=""
 							width="533" height="400">
-						<a href="detail-page.html" class="strip_info">
+						<a href="{{ url_for('item', id=1) }}" class="strip_info">
 							<div class="item_title">
 								<h3>Amazing Art</h3>
 								<small>3.25 ETH</small>
@@ -96,10 +97,10 @@ Home
 				<div class="strip">
 					<figure>
 						<a href="#modal-dialog" class="btn_1 modal_popup">Place a bid</a>
-						<img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}"
+						<img src="{{ url_for('static', filename='img/items/item-3-placeholder.png') }}"
 							data-src="{{ url_for('static', filename='img/items/item-3.jpg') }}" class="owl-lazy" alt=""
 							width="533" height="400">
-						<a href="detail-page.html" class="strip_info">
+						<a href="{{ url_for('item', id=3) }}" class="strip_info">
 							<div class="item_title">
 								<h3>Blue sea pain</h3>
 								<small>0.25 ETH</small>
@@ -128,13 +129,13 @@ Home
 			<!-- /item -->
 			<div class="item">
 				<div class="strip">
-					<div data-countdown="2022/03/15" class="countdown"></div>
+					<div data-countdown="2024/10/15" class="countdown"></div>
 					<figure>
 						<a href="#modal-dialog" class="btn_1 modal_popup">Place a bid</a>
 						<img src="{{ url_for('static', filename='img/items/item-1-placeholder.png') }}"
 							data-src="{{ url_for('static', filename='img/items/item-4.jpg') }}" class="owl-lazy" alt=""
 							width="533" height="400">
-						<a href="detail-page.html" class="strip_info">
+						<a href="{{ url_for('item', id=4) }}" class="strip_info">
 							<div class="item_title">
 								<h3>Abstraction</h3>
 								<small>2.45 ETH</small>
