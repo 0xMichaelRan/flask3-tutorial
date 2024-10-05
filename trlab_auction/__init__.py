@@ -3,8 +3,9 @@ from flask import Flask, render_template
 from dotenv import load_dotenv
 
 from . import database
-from trlab_auction.src.auth import bp as auth_bp
-from trlab_auction.src.profile import bp as profile_bp
+from .src.auth import bp as auth_bp
+from .src.profile import bp as profile_bp
+from .src.art.artwork import bp as art_bp
 
 # Load environment variables
 load_dotenv()
@@ -23,6 +24,7 @@ def create_app(test_config=None):
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(profile_bp)
+    app.register_blueprint(art_bp)
 
     database.init_app(app)
 
